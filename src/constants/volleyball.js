@@ -61,5 +61,14 @@ export const PLAYER_COLORS = {
 
 export const COURT_DIMENSIONS = {
   width: 500,
-  height: 400
+  height: 400,
+  // Responsive breakpoints
+  mobile: {
+    width: 320,
+    height: 256
+  },
+  tablet: {
+    width: 400,
+    height: 320
+  }
 };

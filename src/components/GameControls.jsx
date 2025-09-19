@@ -10,49 +10,74 @@ const GameControls = ({
   onReset 
 }) => {
   return (
-    <div className="flex justify-center items-center gap-4 mb-4">
+    <div className="flex flex-col gap-3 mb-4">
+      {/* Primary toggle button - full width */}
       <button
         onClick={onToggleCustomMode}
-        className={`${customMode ? 'bg-orange-500 hover:bg-orange-600' : 'bg-purple-500 hover:bg-purple-600'} 
-                   text-white px-4 py-2 rounded-lg transition-colors font-semibold`}
+        className={`${customMode ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' : 'bg-purple-500 hover:bg-purple-600 active:bg-purple-700'}
+                   text-white px-4 py-3 rounded-lg transition-all duration-200 font-semibold text-sm sm:text-base
+                   w-full min-h-[52px] touch-manipulation active:scale-98 shadow-lg`}
       >
-        {customMode ? '📍 exploration Mode' : '🎮 Move players'}
+        {customMode ? '📍 Exploration Mode - Tap to Exit' : '🎮 Tap to Move Players'}
       </button>
 
+      {/* Navigation and control buttons - centered row */}
       {!customMode && (
-        <>
+        <div className="flex justify-center items-center gap-3 sm:gap-4">
           <button
             onClick={onPrevRotation}
-            className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full transition-colors"
+            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white p-3 rounded-full transition-all duration-200
+                       min-w-[52px] min-h-[52px] touch-manipulation active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isAnimating}
+            aria-label="Previous rotation"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={22} />
           </button>
 
           <button
             onClick={onAutoRotate}
-            className={`${isAnimating ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} 
-                       text-white p-3 rounded-full transition-colors`}
+            className={`${isAnimating ? 'bg-red-500 hover:bg-red-600 active:bg-red-700' : 'bg-green-500 hover:bg-green-600 active:bg-green-700'}
+                       text-white p-3 rounded-full transition-all duration-200 min-w-[52px] min-h-[52px] touch-manipulation active:scale-95 shadow-lg`}
+            aria-label={isAnimating ? "Pause auto-rotation" : "Start auto-rotation"}
           >
-            {isAnimating ? <Pause size={20} /> : <Play size={20} />}
+            {isAnimating ? <Pause size={22} /> : <Play size={22} />}
           </button>
 
           <button
             onClick={onNextRotation}
-            className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full transition-colors"
+            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white p-3 rounded-full transition-all duration-200
+                       min-w-[52px] min-h-[52px] touch-manipulation active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isAnimating}
+            aria-label="Next rotation"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={22} />
           </button>
-        </>
+
+          <button
+            onClick={onReset}
+            className="bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white p-3 rounded-full transition-all duration-200
+                       min-w-[52px] min-h-[52px] touch-manipulation active:scale-95 shadow-lg"
+            aria-label="Reset to start"
+          >
+            <RotateCcw size={22} />
+          </button>
+        </div>
       )}
 
-      <button
-        onClick={onReset}
-        className="bg-gray-500 hover:bg-gray-600 text-white p-3 rounded-full transition-colors"
-      >
-        <RotateCcw size={20} />
-      </button>
+      {/* Custom mode reset button */}
+      {customMode && (
+        <div className="flex justify-center">
+          <button
+            onClick={onReset}
+            className="bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white px-6 py-2 rounded-lg transition-all duration-200
+                       touch-manipulation active:scale-95 shadow-lg text-sm font-medium"
+            aria-label="Reset to start"
+          >
+            <RotateCcw size={18} className="inline mr-2" />
+            Reset
+          </button>
+        </div>
+      )}
     </div>
   );
 };
