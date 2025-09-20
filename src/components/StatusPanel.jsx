@@ -2,101 +2,149 @@ import { AlertTriangle, CheckCircle } from 'lucide-react';
 import { PLAYER_COLORS } from '../constants/volleyball';
 import { VolleyballRulesEngine } from '../services/VolleyballRulesEngine';
 
-const StatusPanel = ({ 
-  isLegalRotation, 
-  violations, 
-  customMode, 
-  currentRotation, 
-  servingPlayer, 
-  selectedPlayer, 
-  positions,
-  showPositionNumbers,
-  onTogglePositionNumbers 
+const StatusPanel = ({
+  isLegalRotation = true,
+  violations = [],
+  customMode = false,
+  currentRotation = 1,
+  servingPlayer = '1',
+  selectedPlayer = null,
+  positions = {},
+  showPositionNumbers = true,
+  onTogglePositionNumbers = () => {}
 }) => {
   return (
     <div className="space-y-3 sm:space-y-4">
 
-      {/* Current Status */}
-      <div className={`p-3 sm:p-4 rounded-lg border-2 ${isLegalRotation ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'}`}>
-        <div className="flex items-center gap-2 mb-2">
-          {isLegalRotation ? <CheckCircle className="text-green-600" size={20} /> : <AlertTriangle className="text-red-600" size={20} />}
-          <h3 className="font-bold text-base sm:text-lg">
-            {customMode ? 'Custom Setup' : `Rotation ${currentRotation}`}: {isLegalRotation ? 'LEGAL ✅' : 'VIOLATION! ❌'}
-          </h3>
-        </div>
-        <p className="text-xs sm:text-sm">
-          {customMode ? 'Drag players to test different positions!' : `Player ${servingPlayer} serves from position 1`}
-        </p>
-      </div>
-
-      {/* Violations Display - Always reserve space */}
-      <div className={`transition-all duration-300 ${
-        !isLegalRotation 
-          ? 'bg-red-50 border border-red-300 p-4 rounded-lg opacity-100 max-h-96' 
-          : 'p-4 opacity-0 max-h-0 overflow-hidden'
+      {/* Current Status - Streamlined */}
+      <div className={`p-4 rounded-xl transition-all duration-300 ${
+        isLegalRotation
+          ? 'bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200'
+          : 'bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200'
       }`}>
-        <h4 className="font-bold text-red-800 mb-2">Rule Violations:</h4>
-        <ul className="text-sm text-red-700 space-y-1">
-          {violations.map((violation, index) => (
-            <li key={index}>• {violation}</li>
-          ))}
-        </ul>
+        <div className="flex items-center gap-3">
+          {isLegalRotation ? (
+            <CheckCircle className="text-emerald-600 flex-shrink-0" size={24} />
+          ) : (
+            <AlertTriangle className="text-red-600 flex-shrink-0" size={24} />
+          )}
+          <div className="flex-1">
+            <h3 className="font-bold text-lg text-gray-800">
+              {customMode ? 'Position Exploration' : `Rotation ${currentRotation}`}
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
+              {customMode
+                ? 'Drag players to test different positions!'
+                : `Player ${servingPlayer} serves from position 1`
+              }
+            </p>
+            {!isLegalRotation && (
+              <div><p className="text-sm text-red-600 mt-2 font-medium">
+              {violations.length} position fault{violations.length !== 1 ? 's' : ''} detected
+            </p>
+            <p>
+              {violations.map((v, idx) => (
+                <span key={idx} className="text-sm text-red-600">
+                  • {v}
+                  <br />
+                </span>
+              ))}
+            </p>
+            </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Player Info */}
+      {/* Player Info - Enhanced */}
       {selectedPlayer && (
-        <div className="bg-white border border-gray-300 p-3 sm:p-4 rounded-lg">
-          <div className="flex items-center gap-2 mb-2">
-            <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full ${PLAYER_COLORS[selectedPlayer]}`}></div>
-            <h4 className="font-bold text-sm sm:text-base">Player {selectedPlayer}</h4>
+        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 p-4 rounded-xl shadow-sm">
+          <div className="flex items-center gap-3 mb-3">
+            <div className={`w-8 h-8 rounded-full ${PLAYER_COLORS[selectedPlayer]} shadow-lg flex items-center justify-center text-white font-bold text-sm`}>
+              {selectedPlayer}
+            </div>
+            <div>
+              <h4 className="font-bold text-base text-gray-800">Player {selectedPlayer}</h4>
+              <p className="text-sm text-gray-600">{positions[selectedPlayer].name}</p>
+            </div>
           </div>
-          <p className="text-xs sm:text-sm mb-1">
-            <strong>Original Position:</strong> {positions[selectedPlayer].name}
-          </p>
-          <p className="text-xs sm:text-sm mb-1">
-            <strong>Current Field Position:</strong> {VolleyballRulesEngine.getFieldPositionName(VolleyballRulesEngine.getFieldPosition(positions[selectedPlayer].x, positions[selectedPlayer].y))}
-          </p>
-          <p className="text-xs sm:text-sm mb-2">
-            <strong>Zone:</strong> {positions[selectedPlayer].zone.toUpperCase()} ROW
-          </p>
-          <div className="text-xs text-gray-600">
-            <p><strong>Can do:</strong></p>
-            <ul className="ml-2">
-              {VolleyballRulesEngine.getPlayerAbilities(positions[selectedPlayer]).map((ability, index) => (
-                <li key={index}>{ability}</li>
-              ))}
-            </ul>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="space-y-2">
+              <div>
+                <span className="font-medium text-gray-700">Zone:</span>
+                <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs font-medium">
+                  {positions[selectedPlayer].zone.toUpperCase()} ROW
+                </span>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Field Position:</span>
+                <p className="text-gray-600 mt-1">
+                  {VolleyballRulesEngine.getFieldPositionName(
+                    VolleyballRulesEngine.getFieldPosition(
+                      positions[selectedPlayer].x,
+                      positions[selectedPlayer].y
+                    )
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <span className="font-medium text-gray-700">Abilities:</span>
+              <ul className="mt-1 space-y-1">
+                {VolleyballRulesEngine.getPlayerAbilities(positions[selectedPlayer]).map((ability, index) => (
+                  <li key={index} className="text-gray-600 text-xs flex items-center gap-1">
+                    <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+                    {ability}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Custom Mode Instructions */}
+      {/* Custom Mode Instructions - Improved */}
       {customMode && (
-        <div className="bg-purple-50 border border-purple-300 p-3 sm:p-4 rounded-lg">
-          <h4 className="font-bold text-purple-800 mb-2 text-sm sm:text-base">🎮 Custom Mode Active</h4>
-          <p className="text-xs sm:text-sm text-purple-700 mb-2">
-            Drag players around to create position faults and see what violations occur!
-          </p>
-          <div className="text-xs text-purple-600">
-            <p><strong>Try these position faults:</strong></p>
-            <ul className="ml-2">
-              <li>• Move front row player behind back row player</li>
-              <li>• Move left player to the right of middle player</li>
-              <li>• Move right player to the left of middle player</li>
-              <li>• Create overlapping positions between adjacent players</li>
-            </ul>
+        <div className="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 p-4 rounded-xl">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-xl">🎮</span>
+            <h4 className="font-bold text-violet-800 text-base">Exploration Mode Active</h4>
           </div>
+          <p className="text-sm text-violet-700 mb-3">
+            Drag players around to create position faults and see how the court responds!
+          </p>
+          <details className="text-sm">
+            <summary className="font-medium text-violet-700 cursor-pointer hover:text-violet-800 transition-colors">
+              💡 Try these position faults...
+            </summary>
+            <ul className="mt-2 space-y-1 text-violet-600 pl-4">
+              <li className="flex items-center gap-2">
+                <span className="w-1 h-1 bg-violet-400 rounded-full"></span>
+                Move front row player behind back row player
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1 h-1 bg-violet-400 rounded-full"></span>
+                Move left player to the right of middle player
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1 h-1 bg-violet-400 rounded-full"></span>
+                Create overlapping positions between adjacent players
+              </li>
+            </ul>
+          </details>
         </div>
       )}
 
-      {/* Toggle Options */}
-      <div className="space-y-2">
-        <label className="flex items-center gap-2 text-xs sm:text-sm touch-manipulation">
+      {/* Toggle Options - Enhanced */}
+      <div className="bg-gray-50 p-3 rounded-xl border border-gray-200">
+        <label className="flex items-center gap-3 text-sm font-medium text-gray-700 cursor-pointer touch-manipulation hover:text-gray-800 transition-colors">
           <input
             type="checkbox"
             checked={showPositionNumbers}
             onChange={(e) => onTogglePositionNumbers(e.target.checked)}
-            className="w-4 h-4 sm:w-5 sm:h-5"
+            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 focus:ring-2"
           />
           Show court position numbers
         </label>

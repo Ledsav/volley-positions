@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { COURT_DIMENSIONS } from '../constants/volleyball';
 import Player from './Player';
 
@@ -12,7 +12,9 @@ const VolleyballCourt = ({
   onPlayerDrag,
   draggedPlayer,
   onDragStart,
-  onDragEnd
+  onDragEnd,
+  isLegalRotation = true,
+  violations = []
 }) => {
   const [courtDimensions, setCourtDimensions] = useState(COURT_DIMENSIONS);
   const [touchStart, setTouchStart] = useState(null);
@@ -125,12 +127,32 @@ const VolleyballCourt = ({
     }
   };
 
+  // Court styling based on violations
+  const getCourtStyle = () => {
+    if (!isLegalRotation) {
+      return {
+        background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+        borderColor: '#dc2626',
+        boxShadow: '0 0 20px rgba(220, 38, 38, 0.3), inset 0 0 20px rgba(220, 38, 38, 0.1)'
+      };
+    }
+    return {
+      background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+      borderColor: '#059669',
+      boxShadow: '0 0 20px rgba(5, 150, 105, 0.2), inset 0 0 20px rgba(5, 150, 105, 0.05)'
+    };
+  };
+
   return (
     <div className="lg:col-span-2">
       <div
         id="volleyball-court"
-        className="relative bg-orange-200 border-4 border-orange-600 rounded-lg mx-auto mb-4 touch-none select-none"
-        style={{ width: `${courtDimensions.width}px`, height: `${courtDimensions.height}px` }}
+        className="relative border-4 rounded-xl mx-auto mb-4 touch-none select-none transition-all duration-500 ease-in-out"
+        style={{
+          width: `${courtDimensions.width}px`,
+          height: `${courtDimensions.height}px`,
+          ...getCourtStyle()
+        }}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onTouchStart={handleTouchStart}
@@ -138,41 +160,49 @@ const VolleyballCourt = ({
       >
         
         {/* Net */}
-        <div className="absolute top-1/2 left-0 w-full h-2 bg-white transform -translate-y-1"></div>
-        <div className="absolute top-1/2 left-1/2 w-2 h-6 bg-white transform -translate-x-1.5 -translate-y-3"></div>
-        
+        <div className="absolute top-1/2 left-0 w-full h-2 bg-gray-800 transform -translate-y-1 shadow-lg"></div>
+        <div className="absolute top-1/2 left-1/2 w-2 h-6 bg-gray-800 transform -translate-x-1.5 -translate-y-3 shadow-lg"></div>
+
         {/* Attack line (10-foot line) */}
-        <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-red-400"></div>
-        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-red-400"></div>
+        <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-gray-600 opacity-80"></div>
+        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gray-600 opacity-80"></div>
+
+        {/* Court boundary - enhanced visibility */}
+        <div className="absolute top-0 left-0 w-full h-full border-2 border-gray-700 opacity-60 rounded-lg"></div>
         
-        {/* Court boundary */}
-        <div className="absolute top-0 left-0 w-full h-full border-2 border-white opacity-70"></div>
-        
-        {/* Position numbers on court */}
+        {/* Position numbers on court - improved styling */}
         {showPositionNumbers && (
           <>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white rounded px-1 sm:px-2"
+            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
                  style={{bottom: '8px', right: '8px'}}>1</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white rounded px-1 sm:px-2"
+            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
                  style={{top: '8px', right: '8px'}}>2</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white rounded px-1 sm:px-2"
-                 style={{top: '8px', right: `${Math.max(courtDimensions.width * 0.4, 120)}px`}}>3</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white rounded px-1 sm:px-2"
+            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+                 style={{top: '8px', left: '50%', transform: 'translateX(-50%)'}}>3</div>
+            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
                  style={{top: '8px', left: '8px'}}>4</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white rounded px-1 sm:px-2"
+            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
                  style={{bottom: '8px', left: '8px'}}>5</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white rounded px-1 sm:px-2"
-                 style={{bottom: '8px', left: `${Math.max(courtDimensions.width * 0.4, 120)}px`}}>6</div>
+            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+                 style={{bottom: '8px', left: '50%', transform: 'translateX(-50%)'}}>6</div>
           </>
         )}
 
-        {/* Zone labels */}
-        <div className="absolute top-4 left-4 text-xs sm:text-sm font-bold text-black bg-white px-1 sm:px-2 py-1 rounded opacity-75">
-          FRONT ROW
+        {/* Zone labels - improved styling */}
+        <div className="absolute top-13 left-0 text-xs sm:text-sm font-semibold text-gray-700  px-2 py-1 rounded-md  ">
+          FRONT
         </div>
-        <div className="absolute bottom-4 left-4 text-xs sm:text-sm font-bold text-black bg-white px-1 sm:px-2 py-1 rounded opacity-75">
-          BACK ROW
+        <div className="absolute bottom-13 left-0 text-xs sm:text-sm font-semibold text-gray-700  px-2 py-1 rounded-md ">
+          BACK
         </div>
+
+        {/* Warning indicator outside court for violations */}
+        {!isLegalRotation && violations && violations.length > 0 && (
+          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-red-100 border border-red-300 px-3 py-1 rounded-full text-xs font-medium text-red-700 shadow-lg animate-pulse">
+            <span className="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+            Position Fault Detected
+          </div>
+        )}
 
         {/* Players */}
         {Object.entries(positions).map(([playerId, position]) => (

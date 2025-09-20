@@ -104,66 +104,78 @@ const VolleyballRotations = () => {
   const isLegalRotation = violations.length === 0;
 
   return (
-    <div className="max-w-7xl mx-auto p-2 sm:p-4 lg:p-6 bg-gradient-to-br from-orange-100 to-blue-100 rounded-lg sm:rounded-xl shadow-lg">
-      {/* Header - Compact on mobile */}
-      <div className="text-center mb-3 sm:mb-4 lg:mb-6">
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">🏐 Volleyball Position Faults</h1>
-        <p className="text-sm sm:text-base lg:text-lg text-gray-600">Learn what creates position faults at serve contact!</p>
+    <div className="max-w-7xl mx-auto p-3 sm:p-6 lg:p-8">
+      {/* Header - Mobile-first design */}
+      <div className="text-center mb-4 sm:mb-6 lg:mb-8">
+        <div className="inline-flex items-center gap-2 mb-2">
+          <span className="text-2xl sm:text-3xl">🏐</span>
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent">
+            Spike & Learn
+          </h1>
+        </div>
+        <p className="text-sm sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Master volleyball position rules by exploring what creates faults at serve contact
+        </p>
       </div>
 
-      {/* Mobile-optimized layout */}
-      <div className="space-y-4 sm:space-y-6">
+      <div className="">
 
-        {/* Court Section */}
-        <div className="flex flex-col items-center">
-          <VolleyballCourt
-            positions={positions}
-            servingPlayer={servingPlayer}
-            selectedPlayer={selectedPlayer}
-            customMode={customMode}
-            showPositionNumbers={showPositionNumbers}
-            onPlayerSelect={handlePlayerSelect}
-            onPlayerDrag={handlePlayerDrag}
-            draggedPlayer={draggedPlayer}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          />
+        {/* Mobile-optimized layout */}
+        <div className="space-y-5 sm:space-y-7">
 
-          {/* Controls directly under court - always visible */}
-          <div className="w-full max-w-lg mt-3 sm:mt-4">
-            <GameControls
-              customMode={customMode}
-              isAnimating={isAnimating}
-              onToggleCustomMode={toggleCustomMode}
-              onPrevRotation={prevRotation}
-              onAutoRotate={autoRotate}
-              onNextRotation={nextRotation}
-              onReset={resetToStart}
-            />
-          </div>
-        </div>
-
-        {/* Content sections side-by-side on larger screens */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-
-          {/* Status Panel */}
-          <div className="order-1">
-            <StatusPanel
-              isLegalRotation={isLegalRotation}
-              violations={violations}
-              customMode={customMode}
-              currentRotation={currentRotation}
+          {/* Court Section */}
+          <div className="flex flex-col items-center">
+            <VolleyballCourt
+              positions={positions}
               servingPlayer={servingPlayer}
               selectedPlayer={selectedPlayer}
-              positions={positions}
+              customMode={customMode}
               showPositionNumbers={showPositionNumbers}
-              onTogglePositionNumbers={setShowPositionNumbers}
+              onPlayerSelect={handlePlayerSelect}
+              onPlayerDrag={handlePlayerDrag}
+              draggedPlayer={draggedPlayer}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              isLegalRotation={isLegalRotation}
+              violations={violations}
             />
+
+            {/* Controls directly under court - always visible */}
+            <div className="w-full max-w-lg mt-4 sm:mt-6">
+              <GameControls
+                customMode={customMode}
+                isAnimating={isAnimating}
+                onToggleCustomMode={toggleCustomMode}
+                onPrevRotation={prevRotation}
+                onAutoRotate={autoRotate}
+                onNextRotation={nextRotation}
+                onReset={resetToStart}
+              />
+            </div>
           </div>
 
-          {/* Rules Summary */}
-          <div className="order-2">
-            <RulesSummary />
+          {/* Content sections side-by-side on larger screens */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8">
+
+            {/* Status Panel */}
+            <div className="order-1">
+              <StatusPanel
+                isLegalRotation={isLegalRotation}
+                violations={violations}
+                customMode={customMode}
+                currentRotation={currentRotation}
+                servingPlayer={servingPlayer}
+                selectedPlayer={selectedPlayer}
+                positions={positions}
+                showPositionNumbers={showPositionNumbers}
+                onTogglePositionNumbers={setShowPositionNumbers}
+              />
+            </div>
+
+            {/* Rules Summary */}
+            <div className="order-2">
+              <RulesSummary />
+            </div>
           </div>
         </div>
       </div>
