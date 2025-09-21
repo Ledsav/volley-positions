@@ -127,19 +127,19 @@ const VolleyballCourt = ({
     }
   };
 
-  // Court styling based on violations
+  // Premium court styling based on violations
   const getCourtStyle = () => {
     if (!isLegalRotation) {
       return {
         background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
         borderColor: '#dc2626',
-        boxShadow: '0 0 20px rgba(220, 38, 38, 0.3), inset 0 0 20px rgba(220, 38, 38, 0.1)'
+        boxShadow: '0 0 25px rgba(220, 38, 38, 0.25), inset 0 0 15px rgba(220, 38, 38, 0.08)'
       };
     }
     return {
-      background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-      borderColor: '#059669',
-      boxShadow: '0 0 20px rgba(5, 150, 105, 0.2), inset 0 0 20px rgba(5, 150, 105, 0.05)'
+      background: 'linear-gradient(135deg, #f0fdf9 0%, #dcfce7 100%)',
+      borderColor: '#16a34a',
+      boxShadow: '0 0 25px rgba(22, 163, 74, 0.2), inset 0 0 15px rgba(22, 163, 74, 0.05)'
     };
   };
 
@@ -159,16 +159,16 @@ const VolleyballCourt = ({
         onTouchEnd={handleTouchEnd}
       >
         
-        {/* Net */}
-        <div className="absolute top-1/2 left-0 w-full h-2 bg-gray-800 transform -translate-y-1 shadow-lg"></div>
-        <div className="absolute top-1/2 left-1/2 w-2 h-6 bg-gray-800 transform -translate-x-1.5 -translate-y-3 shadow-lg"></div>
+        {/* Net - Premium athletic styling */}
+        <div className="absolute top-1/2 left-0 w-full h-2 bg-slate-800 transform -translate-y-1 shadow-lg border-y border-slate-900"></div>
+        <div className="absolute top-1/2 left-1/2 w-2 h-6 bg-slate-800 transform -translate-x-1.5 -translate-y-3 shadow-lg rounded-sm"></div>
 
-        {/* Attack line (10-foot line) */}
-        <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-gray-600 opacity-80"></div>
-        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gray-600 opacity-80"></div>
+        {/* Attack line (10-foot line) - Professional court markings */}
+        <div className="absolute bottom-1/4 left-0 w-full h-0.5 bg-slate-600 opacity-90 shadow-sm"></div>
+        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-slate-600 opacity-90 shadow-sm"></div>
 
-        {/* Court boundary - enhanced visibility */}
-        <div className="absolute top-0 left-0 w-full h-full border-2 border-gray-700 opacity-60 rounded-lg"></div>
+        {/* Court boundary - Clean professional lines */}
+        <div className="absolute top-0 left-0 w-full h-full border-2 border-slate-700 opacity-70 rounded-lg"></div>
         
         {/* Position numbers on court - improved styling */}
         {showPositionNumbers && (
@@ -188,18 +188,18 @@ const VolleyballCourt = ({
           </>
         )}
 
-        {/* Zone labels - improved styling */}
-        <div className="absolute top-13 left-0 text-xs sm:text-sm font-semibold text-gray-700  px-2 py-1 rounded-md  ">
-          FRONT
+        {/* Zone labels - Premium sports styling */}
+        <div className="absolute top-15 left-3 text-xs sm:text-sm font-bold text-slate-800 ">
+          FRONT 
         </div>
-        <div className="absolute bottom-13 left-0 text-xs sm:text-sm font-semibold text-gray-700  px-2 py-1 rounded-md ">
+        <div className="absolute bottom-15 left-3 text-xs sm:text-sm font-bold text-slate-800 ">
           BACK
         </div>
 
-        {/* Warning indicator outside court for violations */}
+        {/* Premium warning indicator for violations */}
         {!isLegalRotation && violations && violations.length > 0 && (
-          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-red-100 border border-red-300 px-3 py-1 rounded-full text-xs font-medium text-red-700 shadow-lg animate-pulse">
-            <span className="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 px-4 py-2 rounded-xl text-sm font-semibold text-red-700 shadow-lg animate-pulse">
+            <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
             Position Fault Detected
           </div>
         )}

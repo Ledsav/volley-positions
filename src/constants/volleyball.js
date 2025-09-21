@@ -50,13 +50,14 @@ export const ROTATIONS = {
   }
 };
 
+// Premium sports color palette for players
 export const PLAYER_COLORS = {
-  1: "bg-red-500",
-  2: "bg-blue-500", 
-  3: "bg-green-500",
-  4: "bg-yellow-500",
-  5: "bg-purple-500",
-  6: "bg-pink-500"
+  1: "bg-red-600",      // Strong red for server visibility
+  2: "bg-blue-700",     // Deep athletic blue
+  3: "bg-emerald-600",  // Professional green
+  4: "bg-amber-500",    // Energetic amber
+  5: "bg-orange-600",   // Athletic orange
+  6: "bg-slate-700"     // Premium neutral
 };
 
 export const COURT_DIMENSIONS = {
