@@ -17,6 +17,29 @@ const VolleyballCourt = ({
   violations = []
 }) => {
   const [courtDimensions, setCourtDimensions] = useState(COURT_DIMENSIONS);
+
+  // Function to get player role based on position and zone
+  const getPlayerRole = (playerId, playerPositions) => {
+    const player = playerPositions[playerId];
+    if (!player) return playerId;
+
+    switch (playerId) {
+      case '1':
+        return 'S'; // Setter
+      case '2':
+        return 'OH'; // Outside Hitter
+      case '3':
+        return player.zone === 'front' ? 'MB' : 'L'; // Middle Blocker or Libero
+      case '4':
+        return 'OP'; // Opposite
+      case '5':
+        return 'OH'; // Outside Hitter
+      case '6':
+        return player.zone === 'front' ? 'MB' : 'L'; // Middle Blocker or Libero
+      default:
+        return playerId;
+    }
+  };
   const [touchStart, setTouchStart] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -173,17 +196,17 @@ const VolleyballCourt = ({
         {/* Position numbers on court - improved styling */}
         {showPositionNumbers && (
           <>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+            <div className="absolute text-sm sm:text-lg font-bold text-slate-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-slate-200"
                  style={{bottom: '8px', right: '8px'}}>1</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+            <div className="absolute text-sm sm:text-lg font-bold text-slate-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-slate-200"
                  style={{top: '8px', right: '8px'}}>2</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+            <div className="absolute text-sm sm:text-lg font-bold text-slate-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-slate-200"
                  style={{top: '8px', left: '50%', transform: 'translateX(-50%)'}}>3</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+            <div className="absolute text-sm sm:text-lg font-bold text-slate-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-slate-200"
                  style={{top: '8px', left: '8px'}}>4</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+            <div className="absolute text-sm sm:text-lg font-bold text-slate-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-slate-200"
                  style={{bottom: '8px', left: '8px'}}>5</div>
-            <div className="absolute text-sm sm:text-lg font-bold text-gray-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-gray-200"
+            <div className="absolute text-sm sm:text-lg font-bold text-slate-700 bg-white/95 backdrop-blur-sm rounded-lg px-2 py-1 shadow-sm border border-slate-200"
                  style={{bottom: '8px', left: '50%', transform: 'translateX(-50%)'}}>6</div>
           </>
         )}
@@ -209,6 +232,7 @@ const VolleyballCourt = ({
           <Player
             key={playerId}
             playerId={playerId}
+            playerRole={getPlayerRole(playerId, positions)}
             position={position}
             isServer={playerId === servingPlayer}
             isSelected={selectedPlayer === playerId}

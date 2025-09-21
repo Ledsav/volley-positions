@@ -3,6 +3,7 @@ import { PLAYER_COLORS } from '../constants/volleyball';
 
 const Player = ({
   playerId,
+  playerRole,
   position,
   isServer,
   isSelected,
@@ -76,7 +77,7 @@ const Player = ({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {playerId}
+      {playerRole || playerId}
       {isServer && (
         <div
           className="absolute -top-1 -right-1 text-yellow-300"
