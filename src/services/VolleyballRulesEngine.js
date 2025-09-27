@@ -43,19 +43,34 @@ export class VolleyballRulesEngine {
       }
     });
   
-    // Rule 1: Check for any player in the front row if it has a smaller y than any in the back
-    Object.entries(frontPlayers).forEach(([frontId, frontPlayer]) => {
-      Object.entries(backPlayers).forEach(([backId, backPlayer]) => {
-        if (frontPlayer.y >= backPlayer.y) {
-          violations.push(`Position fault: Front row player ${frontId} cannot be behind back row player ${backId}`);
-        }
-      });
-    });
+    // Rule 1: Check mirror positions - front/back players can only cross their direct counterpart
+    // Position 2 (right front) mirrors position 1 (right back)
+    // Position 3 (middle front) mirrors position 6 (middle back)
+    // Position 4 (left front) mirrors position 5 (left back)
+
+    const rightFront = Object.entries(frontPlayers).find(([, data]) => data.name.includes('Right Front'));
+    const rightBack = Object.entries(backPlayers).find(([, data]) => data.name.includes('Right Back'));
+    const middleFront = Object.entries(frontPlayers).find(([, data]) => data.name.includes('Middle Front'));
+    const middleBack = Object.entries(backPlayers).find(([, data]) => data.name.includes('Middle Back'));
+    const leftFront = Object.entries(frontPlayers).find(([, data]) => data.name.includes('Left Front'));
+    const leftBack = Object.entries(backPlayers).find(([, data]) => data.name.includes('Left Back'));
+
+    // Check right side mirror positions (2 and 1)
+    if (rightFront && rightBack && rightFront[1].y >= rightBack[1].y) {
+      violations.push(`Position fault: Right Front player ${rightFront[0]} cannot be behind Right Back player ${rightBack[0]}`);
+    }
+
+    // Check middle mirror positions (3 and 6)
+    if (middleFront && middleBack && middleFront[1].y >= middleBack[1].y) {
+      violations.push(`Position fault: Middle Front player ${middleFront[0]} cannot be behind Middle Back player ${middleBack[0]}`);
+    }
+
+    // Check left side mirror positions (4 and 5)
+    if (leftFront && leftBack && leftFront[1].y >= leftBack[1].y) {
+      violations.push(`Position fault: Left Front player ${leftFront[0]} cannot be behind Left Back player ${leftBack[0]}`);
+    }
   
     // Rule 2: Check back row relative positions by name
-    const leftBack = Object.entries(backPlayers).find(([, data]) => data.name.includes('Left Back'));
-    const middleBack = Object.entries(backPlayers).find(([, data]) => data.name.includes('Middle Back'));
-    const rightBack = Object.entries(backPlayers).find(([, data]) => data.name.includes('Right Back'));
 
     if (leftBack && middleBack && rightBack) {
       // Check if middle back is actually between left and right back
@@ -65,9 +80,6 @@ export class VolleyballRulesEngine {
     }
   
     // Rule 3: Check front row relative positions by name
-    const leftFront = Object.entries(frontPlayers).find(([, data]) => data.name.includes('Left Front'));
-    const middleFront = Object.entries(frontPlayers).find(([, data]) => data.name.includes('Middle Front'));
-    const rightFront = Object.entries(frontPlayers).find(([, data]) => data.name.includes('Right Front'));
   
     if (leftFront && middleFront && rightFront) {
       // Check if middle front is actually between left and right front
