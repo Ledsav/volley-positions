@@ -1,37 +1,18 @@
-@import "tailwindcss";
-
-/* Mobile optimization and touch improvements */
-html {
-  /* Prevent zoom on double tap for better mobile UX */
-  touch-action: manipulation;
-}
-
 body {
-  /* Prevent pull-to-refresh on mobile */
-  overscroll-behavior: none;
-  /* Improve scrolling on iOS */
-  -webkit-overflow-scrolling: touch;
-  /* Prevent horizontal overflow on mobile */
-  overflow-x: hidden;
+  margin: 0;
+  background: #58ADCD;
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: #221B12;
 }
 
-/* Enhanced mobile touch styles */
-button {
-  /* Improve button responsiveness on mobile */
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-}
+a { color: #24406B; }
+a:hover { color: #221B12; }
 
-/* Court specific mobile optimizations */
-#volleyball-court {
-  /* Ensure court doesn't cause horizontal scroll */
-  max-width: 100%;
-  /* Better touch interaction */
-  touch-action: none;
-}
+button { font-family: inherit; }
 
-/* Player drag improvements */
-.player-dragging {
-  z-index: 1000;
-  transform: scale(1.1);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+@keyframes flashIn {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.92); }
+  10%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
 }
