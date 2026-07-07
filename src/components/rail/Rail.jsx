@@ -1,13 +1,19 @@
 import { COLORS, FONTS } from '../../theme.js';
 import ActionBar from './ActionBar.jsx';
 import ChallengePanel from './ChallengePanel.jsx';
+import MobileRail from './MobileRail.jsx';
 import ModePanel from './ModePanel.jsx';
 import RotationPicker from './RotationPicker.jsx';
 import SelectionCard from './SelectionCard.jsx';
 import StatusPanel from './StatusPanel.jsx';
 
-export default function Rail({ state, derived, actions }) {
+export default function Rail({ state, derived, actions, isMobile }) {
   const team = COLORS.navy;
+
+  if (isMobile) {
+    return <MobileRail state={state} derived={derived} actions={actions} team={team} />;
+  }
+
   return (
     <div style={{ flex: '1 1 272px', maxWidth: 340, minWidth: 260, height: '100%', overflowY: 'auto', boxSizing: 'border-box', background: COLORS.cream, borderLeft: '1px solid rgba(34,27,18,.16)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>

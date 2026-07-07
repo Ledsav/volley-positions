@@ -1,11 +1,10 @@
-import { COLORS, FONTS } from '../../theme.js';
+import { COLORS, FONTS, MOBILE_BAR_HEIGHT } from '../../theme.js';
 import ConstraintOverlay from './ConstraintOverlay.jsx';
 import PlayerToken from './PlayerToken.jsx';
 
 function CourtSurface() {
   return (
     <svg viewBox="0 0 960 1180" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}>
-      <rect x="0" y="0" width="960" height="1180" fill={COLORS.court} />
       <rect x="30" y="30" width="900" height="140" fill={COLORS.courtBack} stroke={COLORS.cream} strokeWidth="5" />
       <rect x="30" y="170" width="900" height="900" fill={COLORS.courtFront} stroke={COLORS.cream} strokeWidth="6" />
       <line x1="30" y1="470" x2="930" y2="470" stroke={COLORS.cream} strokeWidth="5" />
@@ -16,7 +15,7 @@ function CourtSurface() {
   );
 }
 
-export default function Court({ state, derived, actions, courtRef }) {
+export default function Court({ state, derived, actions, courtRef, isMobile }) {
   const team = COLORS.navy;
   const { players, validation, vioZones, status } = derived;
   const n = validation.violations.length;
@@ -25,8 +24,21 @@ export default function Court({ state, derived, actions, courtRef }) {
     : `${n} fault${n === 1 ? '' : 's'}: ` + validation.violations.map(v => v.msg).join('; ');
 
   return (
-    <div style={{ flex: '1 1 480px', minWidth: 0, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 12, boxSizing: 'border-box' }}>
-      <div style={{ position: 'relative', width: '100%', maxWidth: 'min(880px, calc((100dvh - 24px) * 0.8135))', aspectRatio: '960 / 1180' }}>
+    <div style={{
+      flex: isMobile ? '1 1 auto' : '1 1 480px',
+      minWidth: isMobile ? undefined : 0,
+      minHeight: isMobile ? 0 : undefined,
+      width: isMobile ? '100%' : undefined,
+      height: isMobile ? undefined : '100%',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isMobile ? 8 : 12, boxSizing: 'border-box',
+    }}>
+      <div style={{
+        position: 'relative', width: '100%',
+        maxWidth: isMobile
+          ? `min(100%, calc((100dvh - ${MOBILE_BAR_HEIGHT}px - 16px) * 0.8135))`
+          : 'min(880px, calc((100dvh - 24px) * 0.8135))',
+        aspectRatio: '960 / 1180',
+      }}>
         <CourtSurface />
         <ConstraintOverlay
           ref={courtRef}
