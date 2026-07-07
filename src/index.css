@@ -1,1 +1,19 @@
-@import "tailwindcss";
+body {
+  margin: 0;
+  background: #B98A52;
+  background-image: repeating-linear-gradient(90deg, rgba(34, 27, 18, .05) 0 2px, transparent 2px 96px);
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: #221B12;
+}
+
+a { color: #24406B; }
+a:hover { color: #221B12; }
+
+button { font-family: inherit; }
+
+@keyframes flashIn {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.92); }
+  10%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
