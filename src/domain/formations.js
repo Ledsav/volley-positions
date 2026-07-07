@@ -21,10 +21,24 @@ export const COACH_NOTES = {
   6: "Setter in zone 2. Already standing at the target. Easiest,  enjoy it.",
 };
 
+// Zone each role visually occupies. On defense (serving) the back-row libero
+// always anchors zone 5, trading places with whoever naturally rotated there
+// — unless the back-row middle is the one about to serve from zone 1, in
+// which case no libero has entered yet.
+function defenseZones(rot, serving) {
+  const zones = Object.fromEntries(ROLES.map(role => [role, zoneOf(role, rot)]));
+  if (!serving) return zones;
+  const libero = ROLES.find(role => (role === 'MB1' || role === 'MB2') && zones[role] === 6);
+  if (!libero) return zones;
+  const zone5Role = ROLES.find(role => zones[role] === 5);
+  return { ...zones, [libero]: 5, [zone5Role]: 6 };
+}
+
 export function basePositions(rot, serving) {
+  const zones = defenseZones(rot, serving);
   const pos = {};
   ROLES.forEach(role => {
-    const z = zoneOf(role, rot);
+    const z = zones[role];
     let [x, y] = ZONE_BASE[z];
     if (serving && z === 1) { x = 8.0; y = 9.35; }
     pos[role] = { x, y };
@@ -36,16 +50,16 @@ export function basePositions(rot, serving) {
 export function releaseTargets(state) {
   const pos = {};
   const players = derivePlayers(state);
-  const liberoBack = state.serving && players.some(p => p.isLibero);
+  const liberoBack = players.some(p => p.isLibero);
   players.forEach(p => {
     const front = !p.back;
     if (p.role === 'S') pos.S = { x: 6.8, y: 1.0 };
     else if (p.role === 'OPP') pos.OPP = front ? { x: 8.2, y: 1.6 } : { x: 7.6, y: 6.6 };
     else if (p.role === 'OH1' || p.role === 'OH2') {
-      // in defense (our serve) the libero takes zone 5, so the back-row OH covers middle back
+      // the libero always defends zone 5, so the back-row OH covers middle back
       pos[p.role] = front ? { x: 0.9, y: 1.5 } : (liberoBack ? { x: 4.6, y: 6.6 } : { x: 1.4, y: 6.1 });
     }
-    else pos[p.role] = front ? { x: 4.5, y: 0.9 } : (p.isLibero && state.serving ? { x: 1.4, y: 6.3 } : { x: 4.6, y: 6.9 });
+    else pos[p.role] = front ? { x: 4.5, y: 0.9 } : (p.isLibero ? { x: 1.4, y: 6.3 } : { x: 4.6, y: 6.9 });
   });
   return pos;
 }
