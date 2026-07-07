@@ -1,4 +1,4 @@
-# 🏐 Volleyball Rotation Rules — Interactive Visualizer
+# 🏐 Volleyball Rotation Rules,  Interactive Visualizer
 
 An interactive web application built with React and Vite that helps players and coaches **learn, visualize, and test volleyball rotation rules**. It renders a live volleyball court where you can cycle through all six standard rotations, watch them animate automatically, select individual players to inspect their abilities, and freely drag players into custom positions to trigger and study rule violations in real time.
 
@@ -53,7 +53,7 @@ A pure static class that encapsulates all rotation logic:
 ```
 src/
 ├── components/
-│   ├── VolleyballRotations.jsx   # Root stateful component — orchestrates all state and logic
+│   ├── VolleyballRotations.jsx   # Root stateful component,  orchestrates all state and logic
 │   ├── VolleyballCourt.jsx       # SVG/div court with drag-and-drop drop zone
 │   ├── Player.jsx                # Individual draggable/selectable player token
 │   ├── StatusPanel.jsx           # Rotation status, violations list, player info, custom mode tips
@@ -62,7 +62,7 @@ src/
 ├── constants/
 │   └── volleyball.js             # ROTATIONS map (6 rotations × 6 players), PLAYER_COLORS, COURT_DIMENSIONS
 └── services/
-    └── VolleyballRulesEngine.js  # Pure business logic — no React dependencies
+    └── VolleyballRulesEngine.js  # Pure business logic,  no React dependencies
 ```
 
 ### State managed in `VolleyballRotations`

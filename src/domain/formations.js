@@ -1,5 +1,5 @@
 import { ROLES, ZONE_BASE } from './constants.js';
-import { zoneOf, derivePlayers } from './rotation.js';
+import { derivePlayers, zoneOf } from './rotation.js';
 
 // Coach's-answer serve-receive formations (meters: x 0-9 left→right, y 0-9 net→endline),
 // digitized from the reference diagrams.
@@ -14,11 +14,11 @@ export const ANSWERS = {
 
 export const COACH_NOTES = {
   1: "Setter starts back right (zone 1). Slide straight up the right sideline behind OH1, release to target on contact. Easy.",
-  2: "Setter in zone 6. Creep up center behind the OPP — short diagonal release. Easy.",
-  3: "Setter in zone 5. The full diagonal sprint across the court. Hard — drill this one twice as much.",
+  2: "Setter in zone 6. Creep up center behind the OPP,  short diagonal release. Easy.",
+  3: "Setter in zone 5. The full diagonal sprint across the court. Hard,  drill this one twice as much.",
   4: "Setter in zone 4. The stack: press against the net far left, dash along it to target. Hardest rotation in the book.",
-  5: "Setter in zone 3. One step to the right and you're at target. The OPP hides behind you — mid tuck or deep corner both legal.",
-  6: "Setter in zone 2. Already standing at the target. Easiest — enjoy it.",
+  5: "Setter in zone 3. One step to the right and you're at target. The OPP hides behind you,  mid tuck or deep corner both legal.",
+  6: "Setter in zone 2. Already standing at the target. Easiest,  enjoy it.",
 };
 
 export function basePositions(rot, serving) {

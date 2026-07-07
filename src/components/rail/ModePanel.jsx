@@ -3,7 +3,7 @@ import { COLORS, FONTS } from '../../theme.js';
 
 const MODES = [['learn', 'Learn'], ['challenge', 'Challenge'], ['sandbox', 'Sandbox']];
 const MODE_DESCS = {
-  learn: "Ghost markers show the coach's answer for this rotation. Drag players onto them — ghosts are guidance, not snap targets.",
+  learn: "Ghost markers show the coach's answer for this rotation. Drag players onto them,  ghosts are guidance, not snap targets.",
   challenge: 'No ghosts. Build a legal serve receive: three passers seamed, setter ready to release.',
   sandbox: 'Free play. Toggle who serves, watch the constraint web react live.',
 };

@@ -1,4 +1,4 @@
-// Design tokens for the sandy-court aesthetic. Pure — safe to import anywhere.
+// Design tokens for the sandy-court aesthetic. Pure,  safe to import anywhere.
 export const COLORS = {
   court: '#B98A52',       // outer surround / attack-line base
   courtBack: '#C79758',   // front-zone strip

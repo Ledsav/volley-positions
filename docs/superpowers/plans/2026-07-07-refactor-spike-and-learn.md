@@ -1,10 +1,10 @@
-# Spike & Learn Separation-of-Concerns Refactor — Implementation Plan
+# Spike & Learn Separation-of-Concerns Refactor,  Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Decompose the monolithic ~600-line `src/App.jsx` React class component into pure domain modules, a `useTrainer` hook (reducer + effects), and medium-granularity view components, backed by Vitest unit tests — with zero intended behavior change.
+**Goal:** Decompose the monolithic ~600-line `src/App.jsx` React class component into pure domain modules, a `useTrainer` hook (reducer + effects), and medium-granularity view components, backed by Vitest unit tests,  with zero intended behavior change.
 
-**Architecture:** Four layers — (1) pure `src/domain/*` modules with no React/DOM; (2) a `src/hooks/trainerReducer.js` pure reducer + `src/hooks/useTrainer.js` hook that owns state, effects, and interaction handlers and returns `{ state, derived, actions, courtRef }`; (3) presentational components under `src/components/court/*`, `src/components/rail/*`, and `RuleReferenceModal.jsx`; (4) a thin `App.jsx` that wires the hook into the layout. Design tokens live in `src/theme.js`.
+**Architecture:** Four layers,  (1) pure `src/domain/*` modules with no React/DOM; (2) a `src/hooks/trainerReducer.js` pure reducer + `src/hooks/useTrainer.js` hook that owns state, effects, and interaction handlers and returns `{ state, derived, actions, courtRef }`; (3) presentational components under `src/components/court/*`, `src/components/rail/*`, and `RuleReferenceModal.jsx`; (4) a thin `App.jsx` that wires the hook into the layout. Design tokens live in `src/theme.js`.
 
 **Tech Stack:** React 19, Vite 7, Vitest (node environment), ESLint 9.
 
@@ -69,7 +69,7 @@ export default defineConfig({
 - [ ] **Step 4: Create `src/theme.js`**
 
 ```js
-// Design tokens for the sandy-court aesthetic. Pure — safe to import anywhere.
+// Design tokens for the sandy-court aesthetic. Pure,  safe to import anywhere.
 export const COLORS = {
   court: '#B98A52',       // outer surround / attack-line base
   courtBack: '#C79758',   // front-zone strip
@@ -96,7 +96,7 @@ export const ROLES = ['S', 'OH1', 'MB1', 'OPP', 'OH2', 'MB2'];
 export const Z0 = { S: 1, OH1: 2, MB1: 3, OPP: 4, OH2: 5, MB2: 6 };
 export const ROLE_NAMES = { S: 'Setter', OH1: 'Outside hitter 1', MB1: 'Middle blocker 1', OPP: 'Opposite', OH2: 'Outside hitter 2', MB2: 'Middle blocker 2' };
 export const ZONE_BASE = { 1: [7.5, 6.6], 2: [7.5, 1.6], 3: [4.5, 1.6], 4: [1.5, 1.6], 5: [1.5, 6.6], 6: [4.5, 6.6] };
-// [zoneA, zoneB, axis] — lateral: A must be left of B; depth: A (front) must be in front of B (back)
+// [zoneA, zoneB, axis],  lateral: A must be left of B; depth: A (front) must be in front of B (back)
 export const PAIRS = [[4, 3, 'lat'], [3, 2, 'lat'], [5, 6, 'lat'], [6, 1, 'lat'], [4, 5, 'dep'], [3, 6, 'dep'], [2, 1, 'dep']];
 ```
 
@@ -158,7 +158,7 @@ describe('derivePlayers', () => {
 - [ ] **Step 7: Run the test to verify it fails**
 
 Run: `npm run test`
-Expected: FAIL — cannot resolve `./rotation.js` (module not found).
+Expected: FAIL,  cannot resolve `./rotation.js` (module not found).
 
 - [ ] **Step 8: Create `src/domain/rotation.js`**
 
@@ -239,7 +239,7 @@ describe('geometry', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 Run: `npm run test`
-Expected: FAIL — cannot resolve `./geometry.js`.
+Expected: FAIL,  cannot resolve `./geometry.js`.
 
 - [ ] **Step 3: Create `src/domain/geometry.js`**
 
@@ -356,7 +356,7 @@ describe('setterNeighbors', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 Run: `npm run test`
-Expected: FAIL — cannot resolve `./rules.js`.
+Expected: FAIL,  cannot resolve `./rules.js`.
 
 - [ ] **Step 3: Create `src/domain/rules.js`**
 
@@ -364,7 +364,7 @@ Expected: FAIL — cannot resolve `./rules.js`.
 import { PAIRS } from './constants.js';
 
 export function validate(players, serving) {
-  if (serving) return { legal: true, violations: [] }; // our serve — no position check
+  if (serving) return { legal: true, violations: [] }; // our serve,  no position check
   const byZone = {};
   players.forEach(p => { byZone[p.zone] = p; });
   const violations = [];
@@ -377,7 +377,7 @@ export function validate(players, serving) {
   return { legal: violations.length === 0, violations };
 }
 
-// Human-readable constraints for one zone's neighbors — used by the selection card.
+// Human-readable constraints for one zone's neighbors,  used by the selection card.
 export function constraintsForZone(zone, byZone) {
   return PAIRS
     .filter(([a, b]) => a === zone || b === zone)
@@ -479,7 +479,7 @@ describe('releaseTargets', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 Run: `npm run test`
-Expected: FAIL — cannot resolve `./formations.js`.
+Expected: FAIL,  cannot resolve `./formations.js`.
 
 - [ ] **Step 3: Create `src/domain/formations.js`**
 
@@ -502,11 +502,11 @@ export const ANSWERS = {
 
 export const COACH_NOTES = {
   1: "Setter starts back right (zone 1). Slide straight up the right sideline behind OH1, release to target on contact. Easy.",
-  2: "Setter in zone 6. Creep up center behind the OPP — short diagonal release. Easy.",
-  3: "Setter in zone 5. The full diagonal sprint across the court. Hard — drill this one twice as much.",
+  2: "Setter in zone 6. Creep up center behind the OPP,  short diagonal release. Easy.",
+  3: "Setter in zone 5. The full diagonal sprint across the court. Hard,  drill this one twice as much.",
   4: "Setter in zone 4. The stack: press against the net far left, dash along it to target. Hardest rotation in the book.",
-  5: "Setter in zone 3. One step to the right and you're at target. The OPP hides behind you — mid tuck or deep corner both legal.",
-  6: "Setter in zone 2. Already standing at the target. Easiest — enjoy it.",
+  5: "Setter in zone 3. One step to the right and you're at target. The OPP hides behind you,  mid tuck or deep corner both legal.",
+  6: "Setter in zone 2. Already standing at the target. Easiest,  enjoy it.",
 };
 
 export function basePositions(rot, serving) {
@@ -542,7 +542,7 @@ export function releaseTargets(state) {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `npm run test`
-Expected: PASS — including the legal-invariant checks for all 6 rotations.
+Expected: PASS,  including the legal-invariant checks for all 6 rotations.
 
 - [ ] **Step 5: Commit**
 
@@ -587,7 +587,7 @@ describe('evaluateChallenge', () => {
     expect(res.checks.map(c => c.label)).toEqual([
       'Legal at serve contact',
       'Three passers behind the 3 m line',
-      'Seams covered — left, middle, right',
+      'Seams covered,  left, middle, right',
       'Setter positioned to release to target',
     ]);
   });
@@ -609,7 +609,7 @@ describe('evaluateChallenge', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 Run: `npm run test`
-Expected: FAIL — cannot resolve `./challenge.js`.
+Expected: FAIL,  cannot resolve `./challenge.js`.
 
 - [ ] **Step 3: Create `src/domain/challenge.js`**
 
@@ -631,14 +631,14 @@ export function evaluateChallenge(players, validation, rotation) {
   const checks = [
     { ok: validation.legal, label: 'Legal at serve contact' },
     { ok: cPass, label: 'Three passers behind the 3 m line' },
-    { ok: cSeam, label: 'Seams covered — left, middle, right' },
+    { ok: cSeam, label: 'Seams covered,  left, middle, right' },
     { ok: cRelease, label: 'Setter positioned to release to target' },
   ];
   const success = checks.every(c => c.ok);
   const sZone = zoneOf('S', rotation);
   const byZone = {}; players.forEach(p => { byZone[p.zone] = p; });
   const sNbrs = setterNeighbors(sZone, byZone);
-  const insight = `Legal and seamed. Your setter in zone ${sZone} only answers to ${sNbrs.join(' and ')} — keep them happy and any hiding spot works.`;
+  const insight = `Legal and seamed. Your setter in zone ${sZone} only answers to ${sNbrs.join(' and ')},  keep them happy and any hiding spot works.`;
   return { checks, success, insight };
 }
 ```
@@ -654,16 +654,16 @@ const NEUTRAL_CHIP = 'rgba(34,27,18,.72)';
 export function computeStatus(state, validation, { challengeSuccess, learnMatched }) {
   const n = validation.violations.length;
   let head, color, chipText, chipBg;
-  if (state.served) { head = 'Released'; color = COLORS.green; chipText = 'Released — legal spot ≠ playing spot'; chipBg = COLORS.green; }
+  if (state.served) { head = 'Released'; color = COLORS.green; chipText = 'Released,  legal spot ≠ playing spot'; chipBg = COLORS.green; }
   else if (!validation.legal) { head = n === 1 ? '1 fault' : `${n} faults`; color = COLORS.red; chipText = head; chipBg = COLORS.red; }
   else if (challengeSuccess) { head = 'Challenge complete'; color = COLORS.green; chipText = 'Legal ✓ seamed ✓'; chipBg = COLORS.green; }
   else if (learnMatched) { head = "Coach's answer ✓"; color = COLORS.green; chipText = "Coach's answer ✓"; chipBg = COLORS.green; }
-  else if (state.serving) { head = 'Our serve — no checks'; color = COLORS.green; chipText = 'Overlap off'; chipBg = NEUTRAL_CHIP; }
+  else if (state.serving) { head = 'Our serve,  no checks'; color = COLORS.green; chipText = 'Overlap off'; chipBg = NEUTRAL_CHIP; }
   else { head = 'Legal at contact'; color = COLORS.green; chipText = 'Legal'; chipBg = NEUTRAL_CHIP; }
 
   const hint = state.served
-    ? 'The freeze ended at contact — everyone sprinted to their playing positions. Serve again or Reset.'
-    : (validation.legal ? 'Drag anyone. The web shows only the 7 real constraints — diagonals are always free.' : 'Only the broken pair lights up. Fix those two players; nobody else matters.');
+    ? 'The freeze ended at contact,  everyone sprinted to their playing positions. Serve again or Reset.'
+    : (validation.legal ? 'Drag anyone. The web shows only the 7 real constraints,  diagonals are always free.' : 'Only the broken pair lights up. Fix those two players; nobody else matters.');
 
   return { head, color, chipText, chipBg, hint };
 }
@@ -765,7 +765,7 @@ describe('trainerReducer', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 Run: `npm run test`
-Expected: FAIL — cannot resolve `./trainerReducer.js`.
+Expected: FAIL,  cannot resolve `./trainerReducer.js`.
 
 - [ ] **Step 3: Create `src/hooks/trainerReducer.js`**
 
@@ -858,7 +858,7 @@ git commit -m "$(printf 'refactor: add pure trainer reducer state machine\n\nCo-
 - Produces: `useTrainer() → { state, derived, actions, courtRef }` where:
   - `derived = { players, validation, vioZones (Set of zone numbers), byZone, ans, learnMatched, challenge, challengeSuccess, status }`.
   - `actions = { applyRotation(n), setMode(mode), setServing(bool), toggleWeb(), toggleGhosts(), toggleRef(), select(role), dragStart(role,e), dragMove(role,e), dragEnd(role), nudge(role,e), onServe(), onReset(), nextRotation() }`.
-  - `courtRef` — a ref to attach to the court overlay `<svg>` (drag math reads its bounding rect).
+  - `courtRef`,  a ref to attach to the court overlay `<svg>` (drag math reads its bounding rect).
 
 - [ ] **Step 1: Create `src/hooks/useTrainer.js`**
 
@@ -1239,9 +1239,9 @@ export default function Court({ state, derived, actions, courtRef }) {
           />
         ))}
         <div style={{ position: 'absolute', top: '1.6%', left: '2.8%', padding: '5px 12px', borderRadius: 14, background: status.chipBg, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 700, fontSize: 'clamp(11px, 2.4vw, 15px)', letterSpacing: '.8px', textTransform: 'uppercase', pointerEvents: 'none' }}>{status.chipText}</div>
-        <div style={{ position: 'absolute', top: '1.6%', right: '2.8%', padding: '5px 12px', borderRadius: 14, background: 'rgba(34,27,18,.72)', color: COLORS.cream, fontSize: 'clamp(10px, 2vw, 12.5px)', fontWeight: 500, pointerEvents: 'none' }}>{state.serving ? 'our serve — overlap off' : 'serve incoming ●'}</div>
+        <div style={{ position: 'absolute', top: '1.6%', right: '2.8%', padding: '5px 12px', borderRadius: 14, background: 'rgba(34,27,18,.72)', color: COLORS.cream, fontSize: 'clamp(10px, 2vw, 12.5px)', fontWeight: 500, pointerEvents: 'none' }}>{state.serving ? 'our serve,  overlap off' : 'serve incoming ●'}</div>
         {state.whistle && (
-          <div style={{ position: 'absolute', left: '50%', top: '42%', transform: 'translate(-50%, -50%)', background: COLORS.red, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 'clamp(18px, 4vw, 30px)', letterSpacing: 1, textTransform: 'uppercase', padding: '14px 26px', borderRadius: 10, animation: 'flashIn 1.4s forwards', pointerEvents: 'none', whiteSpace: 'nowrap' }}>Whistle — fault at contact</div>
+          <div style={{ position: 'absolute', left: '50%', top: '42%', transform: 'translate(-50%, -50%)', background: COLORS.red, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 'clamp(18px, 4vw, 30px)', letterSpacing: 1, textTransform: 'uppercase', padding: '14px 26px', borderRadius: 10, animation: 'flashIn 1.4s forwards', pointerEvents: 'none', whiteSpace: 'nowrap' }}>Whistle,  fault at contact</div>
         )}
         <div aria-live="polite" style={{ position: 'absolute', left: -9999, top: 0 }}>{ariaLive}</div>
       </div>
@@ -1294,7 +1294,7 @@ import { COLORS, FONTS } from '../../theme.js';
 export default function RotationPicker({ rotation, onPick, team }) {
   return (
     <div style={{ borderTop: '1px solid rgba(34,27,18,.16)', padding: '10px 0 2px' }}>
-      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', color: 'rgba(34,27,18,.6)', marginBottom: 8 }}>Rotation — setter's zone</div>
+      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', color: 'rgba(34,27,18,.6)', marginBottom: 8 }}>Rotation,  setter's zone</div>
       <div style={{ display: 'flex', gap: 6 }}>
         {[1, 2, 3, 4, 5, 6].map(n => {
           const active = n === rotation;
@@ -1316,7 +1316,7 @@ import { COLORS, FONTS } from '../../theme.js';
 
 const MODES = [['learn', 'Learn'], ['challenge', 'Challenge'], ['sandbox', 'Sandbox']];
 const MODE_DESCS = {
-  learn: "Ghost markers show the coach's answer for this rotation. Drag players onto them — ghosts are guidance, not snap targets.",
+  learn: "Ghost markers show the coach's answer for this rotation. Drag players onto them,  ghosts are guidance, not snap targets.",
   challenge: 'No ghosts. Build a legal serve receive: three passers seamed, setter ready to release.',
   sandbox: 'Free play. Toggle who serves, watch the constraint web react live.',
 };
@@ -1413,12 +1413,12 @@ export default function SelectionCard({ selected, players, byZone, serving, team
   if (!sel) return null;
 
   let constraints;
-  if (sel.isServer) constraints = [{ txt: 'Server — exempt from all overlap constraints until contact.' }];
-  else if (serving) constraints = [{ txt: 'Our serve — no overlap constraints apply. Stand anywhere.' }];
+  if (sel.isServer) constraints = [{ txt: 'Server,  exempt from all overlap constraints until contact.' }];
+  else if (serving) constraints = [{ txt: 'Our serve,  no overlap constraints apply. Stand anywhere.' }];
   else constraints = constraintsForZone(sel.zone, byZone);
 
   const name = sel.isLibero ? `Libero (in for ${ROLE_NAMES[sel.role]})` : ROLE_NAMES[sel.role];
-  const zoneText = `Zone ${sel.zone} · ${sel.back ? 'back row — no blocking, attack from behind 3 m' : 'front row'}`;
+  const zoneText = `Zone ${sel.zone} · ${sel.back ? 'back row,  no blocking, attack from behind 3 m' : 'front row'}`;
 
   return (
     <div style={{ borderTop: '1px solid rgba(34,27,18,.16)', padding: '10px 0 2px', display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -1468,7 +1468,7 @@ export default function RuleReferenceModal({ onClose }) {
         <div style={{ fontSize: 13.5, lineHeight: 1.6 }}>
           1. Judged by <b>feet</b> at the instant of contact.<br />
           2. Relative to <b>where teammates stand</b>, not floor spots.<br />
-          3. The <b>server is exempt</b> — nobody aligns with them.<br />
+          3. The <b>server is exempt</b>,  nobody aligns with them.<br />
           4. One instant after contact, <b>everyone is free</b>.
         </div>
         <div style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(34,27,18,.65)' }}>Back row: no blocking; attack above the net only from behind the 3 m line. Burn in: <i>neighbors only, feet only, contact only.</i></div>
@@ -1581,7 +1581,7 @@ describe('App', () => {
 - [ ] **Step 3: Run the full test suite**
 
 Run: `npm run test`
-Expected: PASS — all domain tests, the reducer test, and the App render test are green.
+Expected: PASS,  all domain tests, the reducer test, and the App render test are green.
 
 - [ ] **Step 4: Lint**
 
@@ -1609,7 +1609,7 @@ Run: `npm run dev` and click through: switch rotations 1–6, switch Learn/Chall
 ## Notes for the implementer
 
 - **Import extension:** always import local modules with the explicit `.js`/`.jsx` extension, matching the examples.
-- **Do not add** a shared Button/Chip/Panel component library — inline styles stay; only `COLORS`/`FONTS` are shared.
+- **Do not add** a shared Button/Chip/Panel component library,  inline styles stay; only `COLORS`/`FONTS` are shared.
 - **rgba(34,27,18,.XX)** ink-with-alpha strings are intentionally left inline (they are not tokens). Copy them exactly.
-- **The Tailwind config files** (`tailwind.config.js`, `postcss.config.js`) are unused but out of scope — leave them.
-- If any domain unit test fails after a verbatim copy, the copy is wrong — diff against `src/App.jsx` at commit `70d6ecc`, do not "fix" the expectation.
+- **The Tailwind config files** (`tailwind.config.js`, `postcss.config.js`) are unused but out of scope,  leave them.
+- If any domain unit test fails after a verbatim copy, the copy is wrong,  diff against `src/App.jsx` at commit `70d6ecc`, do not "fix" the expectation.

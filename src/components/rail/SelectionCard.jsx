@@ -7,12 +7,12 @@ export default function SelectionCard({ selected, players, byZone, serving, team
   if (!sel) return null;
 
   let constraints;
-  if (sel.isServer) constraints = [{ txt: 'Server — exempt from all overlap constraints until contact.' }];
-  else if (serving) constraints = [{ txt: 'Our serve — no overlap constraints apply. Stand anywhere.' }];
+  if (sel.isServer) constraints = [{ txt: 'Server,  exempt from all overlap constraints until contact.' }];
+  else if (serving) constraints = [{ txt: 'Our serve,  no overlap constraints apply. Stand anywhere.' }];
   else constraints = constraintsForZone(sel.zone, byZone);
 
   const name = sel.isLibero ? `Libero (in for ${ROLE_NAMES[sel.role]})` : ROLE_NAMES[sel.role];
-  const zoneText = `Zone ${sel.zone} · ${sel.back ? 'back row — no blocking, attack from behind 3 m' : 'front row'}`;
+  const zoneText = `Zone ${sel.zone} · ${sel.back ? 'back row,  no blocking, attack from behind 3 m' : 'front row'}`;
 
   return (
     <div style={{ borderTop: '1px solid rgba(34,27,18,.16)', padding: '10px 0 2px', display: 'flex', flexDirection: 'column', gap: 6 }}>

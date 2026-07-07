@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { evaluateChallenge } from './challenge.js';
+import { ANSWERS, basePositions } from './formations.js';
 import { derivePlayers } from './rotation.js';
 import { validate } from './rules.js';
-import { ANSWERS, basePositions } from './formations.js';
 
 function challengeFor(rot, positions) {
   const players = derivePlayers({ rotation: rot, positions, serving: false });
@@ -16,7 +16,7 @@ describe('evaluateChallenge', () => {
     expect(res.checks.map(c => c.label)).toEqual([
       'Legal at serve contact',
       'Three passers behind the 3 m line',
-      'Seams covered — left, middle, right',
+      'Seams covered,  left, middle, right',
       'Setter positioned to release to target',
     ]);
   });

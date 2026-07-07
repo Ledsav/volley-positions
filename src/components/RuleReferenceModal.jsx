@@ -10,7 +10,7 @@ export default function RuleReferenceModal({ onClose }) {
         <div style={{ fontSize: 13.5, lineHeight: 1.6 }}>
           1. Judged by <b>feet</b> at the instant of contact.<br />
           2. Relative to <b>where teammates stand</b>, not floor spots.<br />
-          3. The <b>server is exempt</b> — nobody aligns with them.<br />
+          3. The <b>server is exempt</b>,  nobody aligns with them.<br />
           4. One instant after contact, <b>everyone is free</b>.
         </div>
         <div style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(34,27,18,.65)' }}>Back row: no blocking; attack above the net only from behind the 3 m line. Burn in: <i>neighbors only, feet only, contact only.</i></div>

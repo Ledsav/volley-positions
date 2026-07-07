@@ -1,7 +1,7 @@
 import { PAIRS } from './constants.js';
 
 export function validate(players, serving) {
-  if (serving) return { legal: true, violations: [] }; // our serve — no position check
+  if (serving) return { legal: true, violations: [] }; // our serve,  no position check
   const byZone = {};
   players.forEach(p => { byZone[p.zone] = p; });
   const violations = [];
@@ -14,7 +14,7 @@ export function validate(players, serving) {
   return { legal: violations.length === 0, violations };
 }
 
-// Human-readable constraints for one zone's neighbors — used by the selection card.
+// Human-readable constraints for one zone's neighbors,  used by the selection card.
 export function constraintsForZone(zone, byZone) {
   return PAIRS
     .filter(([a, b]) => a === zone || b === zone)

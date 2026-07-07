@@ -1,6 +1,6 @@
-import { zoneOf } from './rotation.js';
-import { dist } from './geometry.js';
 import { ANSWERS } from './formations.js';
+import { dist } from './geometry.js';
+import { zoneOf } from './rotation.js';
 import { setterNeighbors } from './rules.js';
 
 export function evaluateChallenge(players, validation, rotation) {
@@ -15,13 +15,13 @@ export function evaluateChallenge(players, validation, rotation) {
   const checks = [
     { ok: validation.legal, label: 'Legal at serve contact' },
     { ok: cPass, label: 'Three passers behind the 3 m line' },
-    { ok: cSeam, label: 'Seams covered — left, middle, right' },
+    { ok: cSeam, label: 'Seams covered,  left, middle, right' },
     { ok: cRelease, label: 'Setter positioned to release to target' },
   ];
   const success = checks.every(c => c.ok);
   const sZone = zoneOf('S', rotation);
   const byZone = {}; players.forEach(p => { byZone[p.zone] = p; });
   const sNbrs = setterNeighbors(sZone, byZone);
-  const insight = `Legal and seamed. Your setter in zone ${sZone} only answers to ${sNbrs.join(' and ')} — keep them happy and any hiding spot works.`;
+  const insight = `Legal and seamed. Your setter in zone ${sZone} only answers to ${sNbrs.join(' and ')},  keep them happy and any hiding spot works.`;
   return { checks, success, insight };
 }
