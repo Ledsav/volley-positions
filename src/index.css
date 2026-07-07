@@ -1,7 +1,6 @@
 body {
   margin: 0;
-  background: #B98A52;
-  background-image: repeating-linear-gradient(90deg, rgba(34, 27, 18, .05) 0 2px, transparent 2px 96px);
+  background: #58ADCD;
   font-family: 'IBM Plex Sans', sans-serif;
   color: #221B12;
 }

@@ -1,10 +1,10 @@
-import RotationPicker from './RotationPicker.jsx';
-import ModePanel from './ModePanel.jsx';
-import ChallengePanel from './ChallengePanel.jsx';
-import StatusPanel from './StatusPanel.jsx';
-import SelectionCard from './SelectionCard.jsx';
-import ActionBar from './ActionBar.jsx';
 import { COLORS, FONTS } from '../../theme.js';
+import ActionBar from './ActionBar.jsx';
+import ChallengePanel from './ChallengePanel.jsx';
+import ModePanel from './ModePanel.jsx';
+import RotationPicker from './RotationPicker.jsx';
+import SelectionCard from './SelectionCard.jsx';
+import StatusPanel from './StatusPanel.jsx';
 
 export default function Rail({ state, derived, actions }) {
   const team = COLORS.navy;

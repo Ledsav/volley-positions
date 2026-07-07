@@ -1,6 +1,6 @@
-import PlayerToken from './PlayerToken.jsx';
-import ConstraintOverlay from './ConstraintOverlay.jsx';
 import { COLORS, FONTS } from '../../theme.js';
+import ConstraintOverlay from './ConstraintOverlay.jsx';
+import PlayerToken from './PlayerToken.jsx';
 
 function CourtSurface() {
   return (
@@ -11,7 +11,7 @@ function CourtSurface() {
       <line x1="30" y1="470" x2="930" y2="470" stroke={COLORS.cream} strokeWidth="5" />
       <line x1="8" y1="170" x2="952" y2="170" stroke={COLORS.ink} strokeWidth="12" />
       <line x1="8" y1="158" x2="952" y2="158" stroke="rgba(34,27,18,.35)" strokeWidth="3" />
-      <text x="940" y="452" textAnchor="end" fontFamily={FONTS.body} fontSize="24" fill="rgba(34,27,18,.45)">3 m</text>
+      <text x="920" y="452" textAnchor="end" fontFamily={FONTS.body} fontSize="24" fill="rgba(34,27,18,.45)">3 m</text>
     </svg>
   );
 }
@@ -55,8 +55,8 @@ export default function Court({ state, derived, actions, courtRef }) {
             onKey={e => actions.nudge(p.role, e)}
           />
         ))}
-        <div style={{ position: 'absolute', top: '1.6%', left: '2.8%', padding: '5px 12px', borderRadius: 14, background: status.chipBg, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 700, fontSize: 'clamp(11px, 2.4vw, 15px)', letterSpacing: '.8px', textTransform: 'uppercase', pointerEvents: 'none' }}>{status.chipText}</div>
-        <div style={{ position: 'absolute', top: '1.6%', right: '2.8%', padding: '5px 12px', borderRadius: 14, background: 'rgba(34,27,18,.72)', color: COLORS.cream, fontSize: 'clamp(10px, 2vw, 12.5px)', fontWeight: 500, pointerEvents: 'none' }}>{state.serving ? 'our serve — overlap off' : 'serve incoming ●'}</div>
+        <div style={{ position: 'absolute', top: '3.6%', left: '4.8%', padding: '5px 12px', borderRadius: 14, background: status.chipBg, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 700, fontSize: 'clamp(11px, 2.4vw, 15px)', letterSpacing: '.8px', textTransform: 'uppercase', pointerEvents: 'none' }}>{status.chipText}</div>
+        <div style={{ position: 'absolute', top: '3.6%', right: '4.8%', padding: '5px 12px', borderRadius: 14, background: 'rgba(34,27,18,.72)', color: COLORS.cream, fontSize: 'clamp(10px, 2vw, 12.5px)', fontWeight: 500, pointerEvents: 'none' }}>{state.serving ? 'our serve — overlap off' : 'serve incoming ●'}</div>
         {state.whistle && (
           <div style={{ position: 'absolute', left: '50%', top: '42%', transform: 'translate(-50%, -50%)', background: COLORS.red, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 'clamp(18px, 4vw, 30px)', letterSpacing: 1, textTransform: 'uppercase', padding: '14px 26px', borderRadius: 10, animation: 'flashIn 1.4s forwards', pointerEvents: 'none', whiteSpace: 'nowrap' }}>Whistle — fault at contact</div>
         )}

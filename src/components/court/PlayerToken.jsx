@@ -1,5 +1,5 @@
-import { PX, PY } from '../../domain/geometry.js';
 import { ROLE_NAMES } from '../../domain/constants.js';
+import { PX, PY } from '../../domain/geometry.js';
 import { COLORS, FONTS } from '../../theme.js';
 
 const SPRING = 'left .28s cubic-bezier(.34,1.56,.64,1), top .28s cubic-bezier(.34,1.56,.64,1), transform .18s ease, box-shadow .18s ease';

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
-import { PX, PY } from '../../domain/geometry.js';
 import { PAIRS } from '../../domain/constants.js';
 import { ANSWERS } from '../../domain/formations.js';
+import { PX, PY } from '../../domain/geometry.js';
 import { COLORS, FONTS } from '../../theme.js';
 
 const ZONE_LABEL_POS = { 4: [180, 335], 3: [480, 335], 2: [780, 335], 5: [180, 790], 6: [480, 790], 1: [780, 790] };

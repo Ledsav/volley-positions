@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { initialState, reducer } from './trainerReducer.js';
+import { describe, expect, it } from 'vitest';
 import { derivePlayers } from '../domain/rotation.js';
 import { validate } from '../domain/rules.js';
+import { initialState, reducer } from './trainerReducer.js';
 
 describe('trainerReducer', () => {
   it('starts in learn mode, rotation 1, receiving, web + ghosts on', () => {

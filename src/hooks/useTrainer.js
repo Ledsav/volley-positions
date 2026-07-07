@@ -1,11 +1,11 @@
-import { useReducer, useRef, useEffect } from 'react';
-import { reducer, initialState } from './trainerReducer.js';
+import { useEffect, useReducer, useRef } from 'react';
+import { evaluateChallenge } from '../domain/challenge.js';
+import { ANSWERS } from '../domain/formations.js';
+import { clamp, dist, pointToMeters } from '../domain/geometry.js';
 import { derivePlayers } from '../domain/rotation.js';
 import { validate } from '../domain/rules.js';
-import { evaluateChallenge } from '../domain/challenge.js';
 import { computeStatus } from '../domain/status.js';
-import { ANSWERS } from '../domain/formations.js';
-import { pointToMeters, dist, clamp } from '../domain/geometry.js';
+import { initialState, reducer } from './trainerReducer.js';
 
 export function useTrainer() {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
@@ -123,7 +123,8 @@ export function useTrainer() {
 
   // --- derived (pure, recomputed each render) ------------------------------
   const players = derivePlayers(state);
-  const validation = validate(players, state.serving);
+
+  const validation = validate(players, state.serving || state.served);
   const vioZones = new Set();
   validation.violations.forEach(v => { vioZones.add(v.a); vioZones.add(v.b); });
   const byZone = {};
