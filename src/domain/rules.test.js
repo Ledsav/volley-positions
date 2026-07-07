@@ -35,6 +35,7 @@ describe('validate', () => {
       mk(5, 'OH2', 1.5, 6.6), mk(6, 'MB2', 4.5, 6.6), mk(1, 'S', 7.5, 6.6),
     ];
     const r = validate(players, false);
+    expect(r.legal).toBe(false);
     const v = r.violations.find(x => x.a === 4 && x.b === 5);
     expect(v.axis).toBe('dep');
     expect(v.short).toBe('OPP in front of OH2');
@@ -47,11 +48,20 @@ describe('validate', () => {
 });
 
 describe('constraintsForZone', () => {
-  it('lists the direction relative to each neighbor of a zone', () => {
-    const byZone = { 4: mk(4, 'OPP', 1.5, 1.6), 3: mk(3, 'MB1', 4.5, 1.6), 5: mk(5, 'OH2', 1.5, 6.6) };
+  const byZone = {
+    1: mk(1, 'S', 7.5, 6.6), 2: mk(2, 'OH1', 7.5, 1.6), 3: mk(3, 'MB1', 4.5, 1.6),
+    4: mk(4, 'OPP', 1.5, 1.6), 5: mk(5, 'OH2', 1.5, 6.6), 6: mk(6, 'MB2', 4.5, 6.6),
+  };
+
+  it('lists the a-side directions (left of / in front of)', () => {
     const texts = constraintsForZone(4, byZone).map(c => c.txt);
     expect(texts).toContain('Stay left of MB1 (zone 3)');
     expect(texts).toContain('Stay in front of OH2 (zone 5)');
+  });
+
+  it('lists the b-side directions (right of / behind)', () => {
+    expect(constraintsForZone(3, byZone).map(c => c.txt)).toContain('Stay right of OPP (zone 4)');
+    expect(constraintsForZone(1, byZone).map(c => c.txt)).toContain('Stay behind OH1 (zone 2)');
   });
 });
 
