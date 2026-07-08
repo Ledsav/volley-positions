@@ -80,6 +80,22 @@ describe('trainerReducer', () => {
     expect(back.positions).toEqual(s0.positions);
   });
 
+  it('RELEASE after UNSERVE (stale timer) is a no-op', () => {
+    const s0 = initialState();
+    const served = reducer(s0, { type: 'SERVE_LEGAL' });
+    const back = reducer(served, { type: 'UNSERVE' });
+    const stale = reducer(back, { type: 'RELEASE' });
+    expect(stale.positions).toEqual(s0.positions);
+    expect(stale.releasing).toBe(false);
+  });
+
+  it('RELEASE while serving:true (serve-case dispatch) is a no-op on positions', () => {
+    const serving = reducer(initialState(), { type: 'SET_SERVING', serving: true });
+    const s1 = reducer(serving, { type: 'RELEASE' });
+    expect(s1.positions).toEqual(serving.positions);
+    expect(s1.releasing).toBe(false);
+  });
+
   it('keeps the base receiving formation legal after INIT to a rotation', () => {
     const s = reducer(initialState(), { type: 'INIT', rotation: 4, mode: 'sandbox' });
     expect(s.rotation).toBe(4);

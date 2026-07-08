@@ -55,8 +55,13 @@ export function reducer(state, action) {
         ? { ...state, served: true, ball: { kind: 'outgoing' } }
         : { ...state, preServe: { ...state.positions }, served: true, ball: { kind: 'incoming' } };
     case 'RELEASE':
+      // Beat 2 only applies mid receive-serve; a stale timer after teardown
+      // (UNSERVE/RESET/rotation/mode change) or a serve-case dispatch is a no-op.
+      if (!state.served || state.serving) return state;
       return { ...state, positions: releaseTargets(state), releasing: true };
     case 'RELEASE_END':
+      // Also doubles as the ball-clear for the serve path: nothing was
+      // "released" when we serve, but the ball still needs to disappear.
       return { ...state, releasing: false, ball: null };
     case 'UNSERVE':
       return { ...state, positions: state.preServe || basePositions(state.rotation, state.serving), served: false, preServe: null, ball: null, releasing: false };
