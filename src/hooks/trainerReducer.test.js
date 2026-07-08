@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { derivePlayers } from '../domain/rotation.js';
 import { validate } from '../domain/rules.js';
+import { releaseTargets } from '../domain/formations.js';
 import { initialState, reducer } from './trainerReducer.js';
 
 describe('trainerReducer', () => {
@@ -34,21 +35,48 @@ describe('trainerReducer', () => {
     expect(s1.selected).toBe('S');
   });
 
-  it('SERVE_LEGAL snapshots positions and swaps in release targets', () => {
-    const s0 = initialState();
+  it('SERVE_LEGAL (receiving) spawns an incoming ball and does NOT move players', () => {
+    const s0 = initialState(); // serving: false
     const s1 = reducer(s0, { type: 'SERVE_LEGAL' });
     expect(s1.served).toBe(true);
-    expect(s1.releasing).toBe(true);
+    expect(s1.ball).toEqual({ kind: 'incoming' });
+    expect(s1.releasing).toBe(false);
+    expect(s1.positions).toEqual(s0.positions); // frozen at legal-at-contact spots
     expect(s1.preServe).toEqual(s0.positions);
+  });
+
+  it('RELEASE swaps in the release targets and starts the sprint', () => {
+    const s0 = initialState();
+    const served = reducer(s0, { type: 'SERVE_LEGAL' });
+    const s1 = reducer(served, { type: 'RELEASE' });
+    expect(s1.releasing).toBe(true);
+    expect(s1.positions).toEqual(releaseTargets(served));
     expect(s1.positions.S).toEqual({ x: 6.8, y: 1.0 });
   });
 
-  it('UNSERVE restores the pre-serve snapshot', () => {
+  it('SERVE_LEGAL (serving) spawns an outgoing ball and holds positions', () => {
+    const serving = reducer(initialState(), { type: 'SET_SERVING', serving: true });
+    const s1 = reducer(serving, { type: 'SERVE_LEGAL' });
+    expect(s1.served).toBe(true);
+    expect(s1.ball).toEqual({ kind: 'outgoing' });
+    expect(s1.releasing).toBe(false);
+    expect(s1.positions).toEqual(serving.positions); // no release when we serve
+  });
+
+  it('RELEASE_END clears the ball and ends the sprint', () => {
+    const served = reducer(initialState(), { type: 'SERVE_LEGAL' });
+    const ended = reducer(reducer(served, { type: 'RELEASE' }), { type: 'RELEASE_END' });
+    expect(ended.releasing).toBe(false);
+    expect(ended.ball).toBe(null);
+  });
+
+  it('UNSERVE restores the pre-serve snapshot and clears the ball', () => {
     const s0 = initialState();
     const served = reducer(s0, { type: 'SERVE_LEGAL' });
     const back = reducer(served, { type: 'UNSERVE' });
     expect(back.served).toBe(false);
     expect(back.preServe).toBe(null);
+    expect(back.ball).toBe(null);
     expect(back.positions).toEqual(s0.positions);
   });
 

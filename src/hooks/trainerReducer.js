@@ -6,7 +6,7 @@ export function initialState() {
     rotation: 1, mode: 'learn', serving: false, webOn: true, ghostsOn: true,
     positions: basePositions(1, false),
     selected: null, draggingRole: null, served: false, preServe: null,
-    whistle: false, showRef: false, reduced: false, releasing: false,
+    whistle: false, showRef: false, reduced: false, releasing: false, ball: null,
   };
 }
 
@@ -19,11 +19,11 @@ export function reducer(state, action) {
       return Object.keys(patch).length ? { ...state, ...patch } : state;
     }
     case 'APPLY_ROTATION':
-      return { ...state, rotation: action.n, positions: basePositions(action.n, state.serving), served: false, preServe: null, selected: null };
+      return { ...state, rotation: action.n, positions: basePositions(action.n, state.serving), served: false, preServe: null, selected: null, ball: null, releasing: false };
     case 'SET_MODE':
-      return { ...state, mode: action.mode, serving: false, webOn: action.mode !== 'challenge', ghostsOn: true, served: false, preServe: null, selected: null, positions: basePositions(state.rotation, false) };
+      return { ...state, mode: action.mode, serving: false, webOn: action.mode !== 'challenge', ghostsOn: true, served: false, preServe: null, selected: null, positions: basePositions(state.rotation, false), ball: null, releasing: false };
     case 'SET_SERVING':
-      return { ...state, serving: action.serving, served: false, preServe: null, positions: basePositions(state.rotation, action.serving) };
+      return { ...state, serving: action.serving, served: false, preServe: null, positions: basePositions(state.rotation, action.serving), ball: null, releasing: false };
     case 'TOGGLE_WEB':
       return { ...state, webOn: !state.webOn };
     case 'TOGGLE_GHOSTS':
@@ -43,7 +43,7 @@ export function reducer(state, action) {
       return { ...state, selected: action.role, positions: { ...state.positions, [action.role]: { x: clamp(p.x + action.dx, 0.2, 8.8), y: clamp(p.y + action.dy, 0.2, 9.55) } } };
     }
     case 'RESET':
-      return { ...state, positions: basePositions(state.rotation, state.serving), served: false, preServe: null };
+      return { ...state, positions: basePositions(state.rotation, state.serving), served: false, preServe: null, ball: null, releasing: false };
     case 'SET_REDUCED':
       return { ...state, reduced: action.reduced };
     case 'SERVE_ILLEGAL':
@@ -51,11 +51,15 @@ export function reducer(state, action) {
     case 'WHISTLE_OFF':
       return { ...state, whistle: false };
     case 'SERVE_LEGAL':
-      return { ...state, preServe: { ...state.positions }, served: true, positions: releaseTargets(state), releasing: true };
+      return state.serving
+        ? { ...state, served: true, ball: { kind: 'outgoing' } }
+        : { ...state, preServe: { ...state.positions }, served: true, ball: { kind: 'incoming' } };
+    case 'RELEASE':
+      return { ...state, positions: releaseTargets(state), releasing: true };
     case 'RELEASE_END':
-      return { ...state, releasing: false };
+      return { ...state, releasing: false, ball: null };
     case 'UNSERVE':
-      return { ...state, positions: state.preServe || basePositions(state.rotation, state.serving), served: false, preServe: null };
+      return { ...state, positions: state.preServe || basePositions(state.rotation, state.serving), served: false, preServe: null, ball: null, releasing: false };
     default:
       return state;
   }
