@@ -15,6 +15,26 @@ function CourtSurface() {
   );
 }
 
+function Ball({ ball, reduced }) {
+  const incoming = ball.kind === 'incoming';
+  // Reduced motion: no travel — fade in place at the landing / mid point.
+  const animation = reduced
+    ? 'ballFade 1s forwards'
+    : incoming
+      ? 'ballIncoming 1.7s cubic-bezier(.45,0,.55,1) forwards'
+      : 'ballOutgoing .9s cubic-bezier(.45,0,.55,1) forwards';
+  const base = reduced ? (incoming ? { top: '65%' } : { top: '48%' }) : {};
+  return (
+    <div style={{
+      position: 'absolute', left: '50%', top: '2%', ...base,
+      width: 'clamp(16px, 3.4%, 22px)', aspectRatio: '1', borderRadius: '50%',
+      background: COLORS.cream, border: `2px solid ${COLORS.ink}`,
+      transform: 'translate(-50%, -50%)', boxShadow: '0 2px 6px rgba(34,27,18,.4)',
+      pointerEvents: 'none', zIndex: 15, animation,
+    }} />
+  );
+}
+
 export default function Court({ state, derived, actions, courtRef, isMobile }) {
   const team = COLORS.navy;
   const { players, validation, vioZones, status } = derived;
@@ -67,6 +87,7 @@ export default function Court({ state, derived, actions, courtRef, isMobile }) {
             onKey={e => actions.nudge(p.role, e)}
           />
         ))}
+        {state.ball && <Ball key={`${state.ball.kind}-${state.served}`} ball={state.ball} reduced={state.reduced} />}
         <div style={{ position: 'absolute', top: '3.6%', left: '4.8%', padding: '5px 12px', borderRadius: 14, background: status.chipBg, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 700, fontSize: 'clamp(11px, 2.4vw, 15px)', letterSpacing: '.8px', textTransform: 'uppercase', pointerEvents: 'none' }}>{status.chipText}</div>
         <div style={{ position: 'absolute', top: '3.6%', right: '4.8%', padding: '5px 12px', borderRadius: 14, background: 'rgba(34,27,18,.72)', color: COLORS.cream, fontSize: 'clamp(10px, 2vw, 12.5px)', fontWeight: 500, pointerEvents: 'none' }}>{state.serving ? 'our serve,  overlap off' : 'serve incoming ●'}</div>
         {state.whistle && (

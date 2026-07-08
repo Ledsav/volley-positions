@@ -16,3 +16,23 @@ button { font-family: inherit; }
   75%  { opacity: 1; }
   100% { opacity: 0; }
 }
+
+@keyframes ballIncoming {
+  0%   { top: 2%;  opacity: 0; }
+  10%  { opacity: 1; }
+  35%  { top: 65%; opacity: 1; }
+  72%  { top: 65%; opacity: 1; }
+  100% { top: 65%; opacity: 0; }
+}
+
+@keyframes ballOutgoing {
+  0%   { top: 94%; left: 86%; opacity: 0; }
+  10%  { opacity: 1; }
+  78%  { top: 2%;  left: 50%; opacity: 1; }
+  100% { top: 2%;  left: 50%; opacity: 0; }
+}
+
+@keyframes ballFade {
+  0%, 100% { opacity: 0; }
+  30%, 70% { opacity: 1; }
+}
