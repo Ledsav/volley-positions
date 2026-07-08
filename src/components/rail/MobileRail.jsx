@@ -67,7 +67,7 @@ export default function MobileRail({ state, derived, actions, team }) {
           aria-expanded={expanded}
           style={{ ...stepBtnStyle, width: 32 }}
         >{expanded ? '▾' : '▴'}</button>
-        <button onClick={actions.onServe} style={{ flex: '1 1 auto', minWidth: 0, height: 40, borderRadius: 8, border: 'none', background: COLORS.navy, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 14.5, letterSpacing: '.5px', textTransform: 'uppercase', cursor: 'pointer', padding: '0 8px' }}>{state.served ? 'Receive' : 'Serve!'}</button>
+        <button onClick={actions.onServe} style={{ flex: '1 1 auto', minWidth: 0, height: 40, borderRadius: 8, border: 'none', background: COLORS.navy, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 14.5, letterSpacing: '.5px', textTransform: 'uppercase', cursor: 'pointer', padding: '0 8px' }}>{state.served ? (state.serving ? 'Back' : 'Receive') : (state.serving ? 'Serve!' : 'They serve')}</button>
       </div>
     </div>
   );
