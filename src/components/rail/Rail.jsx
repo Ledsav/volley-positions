@@ -31,7 +31,7 @@ export default function Rail({ state, derived, actions, isMobile }) {
       )}
       <StatusPanel status={derived.status} violations={derived.validation.violations} />
       <SelectionCard selected={state.selected} players={derived.players} byZone={derived.byZone} serving={state.serving} team={team} />
-      <ActionBar served={state.served} onServe={actions.onServe} onReset={actions.onReset} />
+      <ActionBar served={state.served} serving={state.serving} onServe={actions.onServe} onReset={actions.onReset} />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { rotationLabel } from '../../domain/rotation.js';
 import { COLORS, FONTS } from '../../theme.js';
 
 export default function RotationPicker({ rotation, onPick, team }) {
@@ -8,7 +9,7 @@ export default function RotationPicker({ rotation, onPick, team }) {
         {[1, 2, 3, 4, 5, 6].map(n => {
           const active = n === rotation;
           return (
-            <button key={n} onClick={() => onPick(n)} style={{ flex: 1, height: 40, borderRadius: 6, border: active ? `1.5px solid ${team}` : '1.5px solid rgba(34,27,18,.25)', background: active ? team : '#fff', color: active ? COLORS.cream : COLORS.ink, fontFamily: FONTS.display, fontWeight: 700, fontSize: 18, cursor: 'pointer', padding: 0 }}>{n}</button>
+            <button key={n} onClick={() => onPick(n)} style={{ flex: 1, height: 40, borderRadius: 6, border: active ? `1.5px solid ${team}` : '1.5px solid rgba(34,27,18,.25)', background: active ? team : '#fff', color: active ? COLORS.cream : COLORS.ink, fontFamily: FONTS.display, fontWeight: 700, fontSize: 18, cursor: 'pointer', padding: 0 }}>{rotationLabel(n)}</button>
           );
         })}
       </div>

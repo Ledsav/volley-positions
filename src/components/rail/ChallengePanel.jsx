@@ -1,9 +1,10 @@
+import { rotationLabel } from '../../domain/rotation.js';
 import { COLORS, FONTS } from '../../theme.js';
 
 export default function ChallengePanel({ rotation, challenge, challengeSuccess, onNext }) {
   return (
     <div style={{ borderTop: '1px solid rgba(34,27,18,.16)', padding: '10px 0 2px', display: 'flex', flexDirection: 'column', gap: 7 }}>
-      <div style={{ fontSize: 13.5, fontWeight: 600 }}>Set up serve receive for rotation {rotation}.</div>
+      <div style={{ fontSize: 13.5, fontWeight: 600 }}>Set up serve receive for rotation {rotationLabel(rotation)}.</div>
       {challenge.checks.map((c, i) => (
         <div key={i} style={{ display: 'flex', gap: 8, fontSize: 12.5, alignItems: 'baseline' }}>
           <span style={{ fontWeight: 700, color: c.ok ? COLORS.green : 'rgba(34,27,18,.35)', width: 14, flex: 'none' }}>{c.ok ? '✓' : '·'}</span>

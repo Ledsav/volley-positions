@@ -51,13 +51,18 @@ export function releaseTargets(state) {
   const pos = {};
   const players = derivePlayers(state);
   const liberoBack = players.some(p => p.isLibero);
+  // Rotation 1 receive: OH1 (zone 2) and OPP (zone 4) would have to cross to reach
+  // their natural pins. That switch is hard, so keep them where they rotated —
+  // OPP attacks from position 4 (left), OH1 from position 2 (right).
+  const noSwitch = !state.serving && state.rotation === 1;
   players.forEach(p => {
     const front = !p.back;
     if (p.role === 'S') pos.S = { x: 6.8, y: 1.0 };
-    else if (p.role === 'OPP') pos.OPP = front ? { x: 8.2, y: 1.6 } : { x: 7.6, y: 6.6 };
+    else if (p.role === 'OPP') pos.OPP = front ? (noSwitch ? { x: 1.0, y: 1.6 } : { x: 8.2, y: 1.6 }) : { x: 7.6, y: 6.6 };
     else if (p.role === 'OH1' || p.role === 'OH2') {
       // the libero always defends zone 5, so the back-row OH covers middle back
-      pos[p.role] = front ? { x: 0.9, y: 1.5 } : (liberoBack ? { x: 4.6, y: 6.6 } : { x: 1.4, y: 6.1 });
+      const frontTarget = noSwitch && p.role === 'OH1' ? { x: 8.2, y: 1.6 } : { x: 0.9, y: 1.5 };
+      pos[p.role] = front ? frontTarget : (liberoBack ? { x: 4.6, y: 6.6 } : { x: 1.4, y: 6.1 });
     }
     else pos[p.role] = front ? { x: 4.5, y: 0.9 } : (p.isLibero ? { x: 1.4, y: 6.3 } : { x: 4.6, y: 6.9 });
   });

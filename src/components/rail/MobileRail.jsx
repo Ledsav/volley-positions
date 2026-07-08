@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { rotationLabel } from '../../domain/rotation.js';
 import { COLORS, FONTS, MOBILE_BAR_HEIGHT } from '../../theme.js';
 import ChallengePanel from './ChallengePanel.jsx';
 import ModePanel from './ModePanel.jsx';
@@ -37,7 +38,7 @@ export default function MobileRail({ state, derived, actions, team }) {
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
             <div>
               <div style={{ fontFamily: FONTS.display, fontWeight: 800, fontSize: 21, lineHeight: 1, textTransform: 'uppercase', letterSpacing: 1 }}>Spike &amp; Learn</div>
-              <div style={{ fontSize: 11, color: 'rgba(34,27,18,.65)', fontWeight: 500, marginTop: 4 }}>Rotation {state.rotation} · {MODE_LABELS[state.mode]}</div>
+              <div style={{ fontSize: 11, color: 'rgba(34,27,18,.65)', fontWeight: 500, marginTop: 4 }}>Rotation {rotationLabel(state.rotation)} · {MODE_LABELS[state.mode]}</div>
             </div>
             <button onClick={actions.toggleRef} aria-label="Rule reference" style={{ width: 30, height: 30, borderRadius: '50%', border: '1.5px solid rgba(34,27,18,.4)', background: 'none', color: COLORS.ink, fontFamily: FONTS.display, fontWeight: 700, fontSize: 15, cursor: 'pointer', flex: 'none', padding: 0 }}>?</button>
           </div>
@@ -56,7 +57,7 @@ export default function MobileRail({ state, derived, actions, team }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 'none' }}>
           <button onClick={prevRotation} aria-label="Previous rotation" style={stepBtnStyle}>‹</button>
-          <div style={{ fontFamily: FONTS.display, fontWeight: 700, fontSize: 15, minWidth: 30, textAlign: 'center' }}>R{state.rotation}</div>
+          <div style={{ fontFamily: FONTS.display, fontWeight: 700, fontSize: 15, minWidth: 30, textAlign: 'center' }}>R{rotationLabel(state.rotation)}</div>
           <button onClick={nextRotation} aria-label="Next rotation" style={stepBtnStyle}>›</button>
         </div>
         <button onClick={cycleMode} style={{ flex: '1 1 auto', minWidth: 0, height: 36, borderRadius: 6, border: '1.5px solid rgba(34,27,18,.3)', background: '#fff', color: COLORS.ink, fontSize: 12.5, fontWeight: 600, cursor: 'pointer', padding: '0 6px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{MODE_LABELS[state.mode]}</button>
@@ -66,7 +67,7 @@ export default function MobileRail({ state, derived, actions, team }) {
           aria-expanded={expanded}
           style={{ ...stepBtnStyle, width: 32 }}
         >{expanded ? '▾' : '▴'}</button>
-        <button onClick={actions.onServe} style={{ flex: '1 1 auto', minWidth: 0, height: 40, borderRadius: 8, border: 'none', background: COLORS.navy, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 14.5, letterSpacing: '.5px', textTransform: 'uppercase', cursor: 'pointer', padding: '0 8px' }}>{state.served ? 'Receive' : 'Serve!'}</button>
+        <button onClick={actions.onServe} style={{ flex: '1 1 auto', minWidth: 0, height: 40, borderRadius: 8, border: 'none', background: COLORS.navy, color: COLORS.cream, fontFamily: FONTS.display, fontWeight: 800, fontSize: 14.5, letterSpacing: '.5px', textTransform: 'uppercase', cursor: 'pointer', padding: '0 8px' }}>{state.served ? (state.serving ? 'Back' : 'Receive') : (state.serving ? 'Serve!' : 'They serve')}</button>
       </div>
     </div>
   );

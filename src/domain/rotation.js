@@ -2,6 +2,10 @@ import { ROLES, Z0 } from './constants.js';
 
 export const zoneOf = (role, rot) => ((Z0[role] - rot + 6) % 6) + 1;
 
+// Coaches name a rotation by the setter's court zone, not the physical index.
+// Internal indices 1..6 put the setter in zones 1, 6, 5, 4, 3, 2 respectively.
+export const rotationLabel = (rot) => zoneOf('S', rot);
+
 export function derivePlayers({ rotation, positions, serving }) {
   return ROLES.map(role => {
     const zone = zoneOf(role, rotation);

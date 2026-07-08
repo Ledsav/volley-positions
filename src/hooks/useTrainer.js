@@ -18,6 +18,7 @@ export function useTrainer() {
   const dragRef = useRef(null);
   const whistleTimer = useRef(null);
   const releaseTimer = useRef(null);
+  const releaseEndTimer = useRef(null);
 
   // --- effects -------------------------------------------------------------
   // Read rotation/mode from the URL once on mount.
@@ -52,7 +53,7 @@ export function useTrainer() {
   }, []);
 
   // Clear timers on unmount.
-  useEffect(() => () => { clearTimeout(whistleTimer.current); clearTimeout(releaseTimer.current); }, []);
+  useEffect(() => () => { clearTimeout(whistleTimer.current); clearTimeout(releaseTimer.current); clearTimeout(releaseEndTimer.current); }, []);
 
   // --- interaction handlers ------------------------------------------------
   function dragStart(role, e) {
@@ -105,7 +106,15 @@ export function useTrainer() {
     }
     dispatch({ type: 'SERVE_LEGAL' });
     clearTimeout(releaseTimer.current);
-    releaseTimer.current = setTimeout(() => dispatch({ type: 'RELEASE_END' }), 1100);
+    clearTimeout(releaseEndTimer.current);
+    if (s.serving) {
+      // Our serve: ball flies out, players hold. Just clear the ball when it lands.
+      releaseEndTimer.current = setTimeout(() => dispatch({ type: 'RELEASE_END' }), 900);
+    } else {
+      // Their serve: ball travels in (~600ms), THEN players sprint to receive+attack.
+      releaseTimer.current = setTimeout(() => dispatch({ type: 'RELEASE' }), 600);
+      releaseEndTimer.current = setTimeout(() => dispatch({ type: 'RELEASE_END' }), 1700);
+    }
   }
 
   const actions = {

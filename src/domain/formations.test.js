@@ -43,4 +43,17 @@ describe('releaseTargets', () => {
     expect(Object.keys(targets).sort()).toEqual(['MB1', 'MB2', 'OH1', 'OH2', 'OPP', 'S']);
     expect(targets.S).toEqual({ x: 6.8, y: 1.0 });
   });
+
+  it('rotation 1 receive keeps the front row un-switched: OPP attacks left of OH1', () => {
+    const state = { rotation: 1, positions: basePositions(1, false), serving: false };
+    const targets = releaseTargets(state);
+    expect(targets.OPP.x).toBeLessThan(targets.OH1.x); // no crossover
+  });
+
+  it('other rotations still send front-row OPP to the right pin', () => {
+    // rot 3: OPP is front (zone 2) → should still release to the right pin
+    const state = { rotation: 3, positions: basePositions(3, false), serving: false };
+    const targets = releaseTargets(state);
+    expect(targets.OPP.x).toBeGreaterThan(6);
+  });
 });

@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { zoneOf, derivePlayers } from './rotation.js';
+import { zoneOf, derivePlayers, rotationLabel } from './rotation.js';
 import { ZONE_BASE } from './constants.js';
+
+describe('rotationLabel', () => {
+  it('labels each internal rotation by the setter\'s zone', () => {
+    expect([1, 2, 3, 4, 5, 6].map(rotationLabel)).toEqual([1, 6, 5, 4, 3, 2]);
+  });
+});
 
 describe('zoneOf', () => {
   it('maps each role to its base zone in rotation 1', () => {
