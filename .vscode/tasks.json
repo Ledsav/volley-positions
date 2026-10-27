@@ -1,0 +1,56 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup: install npm packages",
+      "type": "shell",
+      "command": "npm ci",
+      "problemMatcher": []
+    },
+    {
+      "label": "setup: test, lint and build",
+      "detail": "Verifies the clone the same way CI does",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Test", "Lint", "Build"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Setup (fresh clone)",
+      "detail": "npm ci, then vitest, eslint and vite build",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "setup: install npm packages",
+        "setup: test, lint and build"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev",
+      "detail": "Vite dev server on http://localhost:5173/volley-positions/",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Test",
+      "type": "npm",
+      "script": "test",
+      "problemMatcher": [],
+      "group": {"kind": "test", "isDefault": true}
+    },
+    {
+      "label": "Lint",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build",
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": [],
+      "group": "build"
+    }
+  ]
+}

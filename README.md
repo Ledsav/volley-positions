@@ -77,22 +77,27 @@ src/
 |---|---|
 | **React 19** | UI framework |
 | **Vite 7** | Dev server and bundler |
-| **Tailwind CSS 4** | Utility-first styling |
+| **Tailwind CSS 4** | Wired into PostCSS but not used yet (styles are inline, from `theme.js` + `index.css`) |
 | **Lucide React** | Icon set |
 | **Vitest** | Unit tests (domain logic + reducer + render smoke test) |
 | **ESLint** | Linting |
 | **PostCSS + Autoprefixer** | CSS processing |
-| **gh-pages** | Static deployment |
+| **GitHub Actions + Pages** | Static deployment (see [Deploying](#deploying)) |
 
 ---
 
 ## Getting Started
 
-```bash
-# Install dependencies
-npm install
+Prerequisites: Node.js 22 (what CI uses; Vite 7 needs at least 20.19).
 
-# Start the development server
+```bash
+git clone https://github.com/Ledsav/volley-positions.git
+cd volley-positions
+
+# Install dependencies
+npm ci
+
+# Start the development server (http://localhost:5173/volley-positions/)
 npm run dev
 
 # Run the test suite
@@ -109,6 +114,18 @@ npm run build
 # Preview the production build
 npm run preview
 ```
+
+In VS Code, **Terminal → Run Task… → Setup (fresh clone)** runs `npm ci`, then the tests, lint and build. **Dev**
+starts the dev server.
+
+## Deploying
+
+The live app is at https://www.albertovaldesrey.com/volley-positions/. `.github/workflows/deploy.yml` runs
+`npm ci`, `npm run lint` and `npm run build` on every push to `main`, then publishes `dist/` to GitHub Pages.
+`vite.config.js` sets `base: '/volley-positions/'`, so asset paths only work under that sub-path.
+
+One-time setup: repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**. There is no local
+deploy script (the `gh-pages` devDependency is unused).
 
 ---
 
